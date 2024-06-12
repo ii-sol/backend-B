@@ -11,9 +11,4 @@ public class Server2Application {
         SpringApplication.run(Server2Application.class, args);
     }
 
-    @RabbitListener(queues = "hello")
-    public void listen(String message) {
-        System.out.println("Received: " + message);
-    }
-
 }
