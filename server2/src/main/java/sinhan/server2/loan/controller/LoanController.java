@@ -1,9 +1,10 @@
-package loan.controller;
+package sinhan.server2.loan.controller;
 
 import java.util.List;
-import loan.dto.LoanDto;
-import loan.service.LoanService;
+import sinhan.server2.loan.dto.LoanDto;
+import sinhan.server2.loan.service.LoanService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,7 +31,8 @@ public class LoanController {
     @PostMapping("/child/loan/create")
     public ApiResult<String> createChildLoan(@RequestBody LoanDto loan) {
         loan.setChildId(1);
-        loan.setParentId(1);
+        loan.setInterestRate(4.5F);
+        loan.setStatus(1);
 
         loanService.saveLoan(loan);
 
@@ -39,15 +41,22 @@ public class LoanController {
 
     @PostMapping("/child/loan/accept")
     public ApiResult<String> acceptChildLoan(@RequestParam int loanId) {
-       loanService.accecptLoan(loanId);
+        loanService.acceptLoan(loanId);
 
-       return ApiUtils.success("Loan accepted successfully");
+        return ApiUtils.success("Loan accepted successfully");
     }
 
     @PostMapping("/child/loan/refuse")
     public ApiResult<String> refuseChildLoan(@RequestParam int loanId) {
         loanService.refuseLoan(loanId);
 
-        return ApiUtils.success("Loan accepted successfully");
+        return ApiUtils.success("Loan refused successfully");
+    }
+
+    @GetMapping("/child/loan/detail/{loanId}")
+    public ApiResult<LoanDto> getChildLoan(@PathVariable int loanId) {
+        LoanDto loanDto = loanService.findOne(loanId);
+
+        return ApiUtils.success(loanDto);
     }
 }

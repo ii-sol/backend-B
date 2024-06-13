@@ -1,7 +1,7 @@
-package loan.repository;
+package sinhan.server2.loan.repository;
 
 import java.util.List;
-import loan.dto.LoanDto;
+import sinhan.server2.loan.dto.LoanDto;
 
 public interface LoanCustomRepository {
     List<LoanDto> findByChildID(int childId);
@@ -9,4 +9,6 @@ public interface LoanCustomRepository {
     void acceptLoan(int loanId);
 
     void refuseLoan(int loanId);
+
+    LoanDto findLoanById(int loanId);
 }
