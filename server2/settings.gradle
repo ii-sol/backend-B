@@ -1,1 +1,4 @@
 rootProject.name = 'server2'
+include 'server-child'
+include 'server-parent'
+include 'server-common'
