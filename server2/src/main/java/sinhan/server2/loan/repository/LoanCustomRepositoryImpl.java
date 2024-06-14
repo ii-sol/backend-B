@@ -32,7 +32,6 @@ public class LoanCustomRepositoryImpl implements LoanCustomRepository {
                 loan.getParentId(),
                 loan.getInterestRate(),
                 loan.getAmount(),
-                loan.getBalance(),
                 loan.getStatus(),
                 loan.getTitle(),
                 loan.getMessage()))

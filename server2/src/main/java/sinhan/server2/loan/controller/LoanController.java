@@ -25,6 +25,10 @@ public class LoanController {
     public ApiResult<List<LoanDto>> getChildLoan() {
         int childId = 1;
         List<LoanDto> loans = loanService.getLoanByChildId(childId);
+
+        for(LoanDto loan : loans) {
+            loan.setParentName("엄마");
+        }
         return ApiUtils.success(loans);
     }
 
@@ -33,6 +37,7 @@ public class LoanController {
         loan.setChildId(1);
         loan.setInterestRate(4.5F);
         loan.setStatus(1);
+        loan.setParentName("엄마");
 
         loanService.saveLoan(loan);
 

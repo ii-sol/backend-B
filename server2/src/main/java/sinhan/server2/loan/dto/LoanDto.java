@@ -49,8 +49,24 @@ public class LoanDto {
         this.amount = amount;
     }
 
-    public LoanDto(int id, Date dueDate, Date createDate, int period, int childId, int parentId, float interestRate, int amount, int balance,
+    public LoanDto(int id, Date dueDate, Date createDate, int period, int childId, int parentId, float interestRate, int amount,
         int status, String title, String message) {
+        this.id = id;
+        this.dueDate = dueDate;
+        this.createDate = createDate;
+        this.period = period;
+        this.childId = childId;
+        this.parentId = parentId;
+        this.interestRate = interestRate;
+        this.amount = amount;
+        this.balance = amount;
+        this.status = status;
+        this.title = title;
+        this.message = message;
+
+    }
+
+    public LoanDto(int id, Date dueDate, Date createDate, int period, int childId, int parentId, float interestRate, int amount, int balance, int status, String title, String message) {
         this.id = id;
         this.dueDate = dueDate;
         this.createDate = createDate;
@@ -63,6 +79,5 @@ public class LoanDto {
         this.status = status;
         this.title = title;
         this.message = message;
-
     }
 }
