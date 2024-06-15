@@ -55,3 +55,22 @@ subprojects { // 각 모듈에 적용할 공통 설정
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+project(':server-common') { // 컴파일 시 multi-module-database 로딩
+
+    dependencies {
+
+    }
+}
+
+project(':server-child') { // 컴파일 시 multi-module-database 로딩
+    dependencies {
+        implementation project(':server-common')
+    }
+}
+
+project(':server-parent') { // 컴파일 시 server-parent 로딩
+    dependencies {
+        implementation project(':server-common')
+    }
+}

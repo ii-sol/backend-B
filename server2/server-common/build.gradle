@@ -39,13 +39,13 @@ subprojects { // 각 모듈에 적용할 공통 설정
     }
 }
 
-project(':server-parent') { // 컴파일 시 multi-module-database 로딩
+project(':server-child') { // 컴파일 시 multi-module-database 로딩
     dependencies {
-        compileOnly project(':server-parent')
+        compileOnly project(':server-child')
     }
 }
 
-project(':server-parent') { // 컴파일 시 multi-module-database 로딩
+project(':server-parent') { // 컴파일 시 server-parent 로딩
     dependencies {
         compileOnly project(':server-parent')
     }
