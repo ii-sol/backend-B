@@ -34,31 +34,44 @@ public class StockService {
         Mono<StockDuraionPriceOutput> stockDuraionPriceOutput = getApiCurrentPrice(ticker,year);
         Mono<StockFianceResponseOutput> stockFianceResponseOutput = getApiFiance(ticker);
         Mono<StockDivideOutput> stockDivideOutputMono = getApiDivide(ticker);
-        System.out.println(stockDivideOutputMono.subscribe());
-        System.out.println(stockDivideOutputMono.block());
-        System.out.println(stockFianceResponseOutput.subscribe().toString());
-        System.out.println(stockFianceResponseOutput.block());
-        System.out.println(stockDivideOutputMono);
-        System.out.println(stockDuraionPriceOutput.block());
+        stockDuraionPriceOutput.subscribe(
+            price -> System.out.println("현재 주가: " + price),
+            error -> System.err.println("에러 발생: " + error.getMessage())
+        );
+        stockFianceResponseOutput.subscribe(
+            price -> System.out.println("현재 주가: " + price),
+            error -> System.err.println("에러 발생: " + error.getMessage())
+        );
+        stockDivideOutputMono.subscribe(
+            price -> System.out.println("현재 주가: " + price),
+            error -> System.err.println("에러 발생: " + error.getMessage())
+        );
+//        System.out.println(stockDivideOutputMono.subscribe());
+//        System.out.println(stockDivideOutputMono.block());
+//        System.out.println(stockFianceResponseOutput.subscribe().toString());
+//        System.out.println(stockFianceResponseOutput.block());
+//        System.out.println(stockDivideOutputMono);
+//        System.out.println(stockDuraionPriceOutput.block());
 //        System.out.println(stockDuraionPriceOutput.block());
 //        System.out.println(stockFianceResponseOutput.block());
 //        System.out.println(stockDivideOutputMono.block());
-        return StockFindDetailResponseDTO.builder()
-            .charts(stockDuraionPriceOutput.block().getOutput2())
-            .ROE(Objects.requireNonNull(stockFianceResponseOutput.block()).getOutput().get(0).getRoe())
-            .PSR(getPSR(Objects.requireNonNull(stockDuraionPriceOutput.block()),
-                Objects.requireNonNull(stockFianceResponseOutput.block())))
-            .PBR(Objects.requireNonNull(stockDuraionPriceOutput.block()).getOutput1().getPbr())
-            .changeSign(Objects.requireNonNull(stockDuraionPriceOutput.block()).getOutput1().getChangeSign())
-            .changePrice(Objects.requireNonNull(stockDuraionPriceOutput.block()).getOutput1().getChangePrice())
-            .changeRate(Objects.requireNonNull(stockDuraionPriceOutput.block()).getOutput1().getChangeRate())
-            .marketCapitalization(
-                Objects.requireNonNull(stockDuraionPriceOutput.block()).getOutput1().getMarketCapitalization())
-            .dividendYield(Objects.requireNonNull(stockDivideOutputMono.block()).getList().get(8).getDividendYield())
-            .companyName(Objects.requireNonNull(stockDuraionPriceOutput.block()).getOutput1().getCompanyName())
-            .currentPrice(Objects.requireNonNull(stockDuraionPriceOutput.block()).getOutput1().getCurrentPrice())
-            .PER(Objects.requireNonNull(stockDuraionPriceOutput.block()).getOutput1().getPer())
-            .build();
+        return null;
+//        return StockFindDetailResponseDTO.builder()
+//            .charts(Objects.requireNonNull(stockDuraionPriceOutput.block(),"char null 값입니다.").getOutput2())
+//            .ROE(Objects.requireNonNull(stockFianceResponseOutput.block()).getOutput().get(0).getRoe())
+//            .PSR(getPSR(Objects.requireNonNull(stockDuraionPriceOutput.block()),
+//                Objects.requireNonNull(stockFianceResponseOutput.block())))
+//            .PBR(Objects.requireNonNull(stockDuraionPriceOutput.block()).getOutput1().getPbr())
+//            .changeSign(Objects.requireNonNull(stockDuraionPriceOutput.block()).getOutput1().getChangeSign())
+//            .changePrice(Objects.requireNonNull(stockDuraionPriceOutput.block()).getOutput1().getChangePrice())
+//            .changeRate(Objects.requireNonNull(stockDuraionPriceOutput.block()).getOutput1().getChangeRate())
+//            .marketCapitalization(
+//                Objects.requireNonNull(stockDuraionPriceOutput.block()).getOutput1().getMarketCapitalization())
+//            .dividendYield(Objects.requireNonNull(stockDivideOutputMono.block()).getList().get(8).getDividendYield())
+//            .companyName(Objects.requireNonNull(stockDuraionPriceOutput.block()).getOutput1().getCompanyName())
+//            .currentPrice(Objects.requireNonNull(stockDuraionPriceOutput.block()).getOutput1().getCurrentPrice())
+//            .PER(Objects.requireNonNull(stockDuraionPriceOutput.block()).getOutput1().getPer())
+//            .build();
     }
 
 
@@ -84,8 +97,7 @@ public class StockService {
         startDateString = simpleDateFormat.format(startDate);
 
         String uri = "/uapi/domestic-stock/v1/quotations/inquire-price";
-        Mono<StockDuraionPriceOutput> mono;
-        return webClientP.get().uri(
+        Mono<StockDuraionPriceOutput> mono = webClientP.get().uri(
                 uriBuilder -> {
                     return uriBuilder.path(uri)
                         .queryParam("fid_cond_mrkt_div_code","J")
@@ -96,10 +108,12 @@ public class StockService {
                         .queryParam("fid_org_adj_prc",0).build();
                 })
             .retrieve()
-            .bodyToMono(StockDuraionPriceOutput.class).onErrorResume(e->{
-                System.out.println(e);
-                return Mono.empty();
-            });
+            .bodyToMono(StockDuraionPriceOutput.class);
+        mono.subscribe(
+            price -> System.out.println("현재 주가: " + price),
+            error -> System.err.println("에러 발생: " + error.getMessage())
+        );
+        return mono;
 //        mono.subscribe(
 //            price -> System.out.println("현재 주가: " + price),
 //            error -> System.err.println("에러 발생: " + error.getMessage())
