@@ -7,14 +7,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import sinhan.server1.domain.invest.service.StockService;
+import sinhan.server1.domain.invest.repository.StockRepository;
 import sinhan.server1.domain.utils.ApiResult;
 
 @RestController
 public class StockController {
-    StockService stockService;
-    StockController(StockService stockService){
-        this.stockService = stockService;
+    StockRepository stockRepository;
+    StockController(StockRepository stockRepository){
+        this.stockRepository = stockRepository;
     }
     //전체 종목 조회하기
 
