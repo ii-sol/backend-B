@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import sinhan.server1.domain.invest.dto.StockFindDetailResponseDTO;
 import sinhan.server1.domain.invest.service.StockService;
-import sinhan.server1.domain.utils.ApiResult;
+import sinhan.server1.global.utils.ApiResult;
 
 @RestController
 public class DartController {

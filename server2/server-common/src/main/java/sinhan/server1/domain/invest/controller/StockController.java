@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import sinhan.server1.domain.invest.service.StockService;
-import sinhan.server1.domain.utils.ApiResult;
+import sinhan.server1.global.utils.ApiResult;
 
 @RestController
 public class StockController {

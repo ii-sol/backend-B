@@ -5,15 +5,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import sinhan.server1.domain.account.dto.AccountFindOneResponse;
 import sinhan.server1.domain.account.dto.AccountHistoryFindAllResponse;
-import sinhan.server1.domain.account.dto.AccountTransmitOneRequest;
-import sinhan.server1.domain.account.dto.AccountTransmitOneResponse;
 import sinhan.server1.domain.account.service.AccountService;
 import sinhan.server1.domain.tempuser.TempUser;
-import sinhan.server1.domain.utils.ApiUtils;
+import sinhan.server1.global.utils.ApiUtils;
 
 import java.util.List;
 
-import static sinhan.server1.domain.utils.ApiUtils.success;
+import static sinhan.server1.global.utils.ApiUtils.success;
 
 @RestController
 @RequestMapping("/account")
