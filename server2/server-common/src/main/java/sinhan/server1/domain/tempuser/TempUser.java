@@ -19,6 +19,8 @@ public class TempUser {
     @Column(name="serial_num" , unique=true)
     private long serialNumber;
 
+    private String name;
+
     @Builder
     public TempUser(long serialNumber) {
         this.serialNumber = serialNumber;
