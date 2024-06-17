@@ -17,12 +17,12 @@ public class TempUser {
     private int id;
 
     @Column(name="serial_num" , unique=true)
-    private long serialNumber;
+    private Long serialNumber;
 
     private String name;
 
     @Builder
-    public TempUser(long serialNumber) {
+    public TempUser(Long serialNumber) {
         this.serialNumber = serialNumber;
     }
 }

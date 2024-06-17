@@ -18,7 +18,7 @@ public class UserUtils {
     private final TempUserRepository tempUserRepository;
 
     //serailNumber로 사용자 조회
-    public TempUser getUser(long serialNumber){
+    public TempUser getUser(Long serialNumber){
         return tempUserRepository.findBySerialNumber(serialNumber)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
     }

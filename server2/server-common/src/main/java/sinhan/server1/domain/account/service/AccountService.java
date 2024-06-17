@@ -35,14 +35,14 @@ public class AccountService {
     private final UserUtils userUtils;
 
     //계좌 개별 조회
-    public AccountFindOneResponse findAccount(long serialNumber, Integer status) {
+    public AccountFindOneResponse findAccount(Long serialNumber, Integer status) {
         TempUser tempUser = userUtils.getUser(serialNumber);
         Account findAccount = accountRepository.findByUserAndStatus(tempUser, status);
         return AccountFindOneResponse.from(findAccount);
     }
 
     //계좌 내역 조회
-    public List<AccountHistoryFindAllResponse> findAccountHistory(long serialNumber, Integer year, Integer month, Integer status) {
+    public List<AccountHistoryFindAllResponse> findAccountHistory(Long serialNumber, Integer year, Integer month, Integer status) {
         TempUser tempUser = userUtils.getUser(serialNumber);
         Account findAccount = accountRepository.findByUserAndStatus(tempUser, status);
 
@@ -56,8 +56,8 @@ public class AccountService {
                 .map(history -> {
                             Account senderAccount = accountUtils.getAccount(history.getSenderAccountNum());
                             Account recieverAccount = accountUtils.getAccount(history.getReceiverAccountNum());
-                            TempUser sender = userUtils.getUser(senderAccount.getUser().getId());
-                            TempUser reciever = userUtils.getUser(recieverAccount.getUser().getId());
+                            TempUser sender = userUtils.getUser(senderAccount.getUser().getSerialNumber());
+                            TempUser reciever = userUtils.getUser(recieverAccount.getUser().getSerialNumber());
 
                             return AccountHistoryFindAllResponse.of(history, sender, reciever);
                         }
@@ -70,7 +70,7 @@ public class AccountService {
     public AccountTransmitOneResponse transferMoney(AccountTransmitOneRequest request) {
         Account senderAccount = accountUtils.getAccount(request.getSendAccountNum());
         Account recieverAccount = accountUtils.getAccount(request.getReceiveAccountNum());
-        TempUser reciever = userUtils.getUser(recieverAccount.getUser().getId());
+        TempUser reciever = userUtils.getUser(recieverAccount.getUser().getSerialNumber());
 
         accountUtils.transferMoneyByAccount(senderAccount, recieverAccount, request.getAmount(), 1);
 

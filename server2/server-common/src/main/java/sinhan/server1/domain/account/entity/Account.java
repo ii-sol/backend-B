@@ -10,6 +10,7 @@ import sinhan.server1.domain.tempuser.TempUser;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "account")
 public class Account {
 
     @Id
@@ -25,13 +26,13 @@ public class Account {
     private TempUser user;
 
     @Column(name = "balance", nullable = true)
-    private Integer balance;
+    private int balance;
 
     @Column(name = "status", nullable = false)
     private int status;
 
     @Builder
-    public Account(int id, String accountNum, TempUser user, Integer balance, int status) {
+    public Account(int id, String accountNum, TempUser user, Integer balance, Integer status) {
         this.accountNum = accountNum;
         this.user = user;
         this.balance = balance;

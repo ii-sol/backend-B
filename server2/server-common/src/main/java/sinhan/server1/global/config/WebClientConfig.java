@@ -11,7 +11,7 @@ import reactor.netty.http.client.HttpClient;
 
 @Configuration
 @PropertySource("classpath:config.properties")
-public class WebClientCongif {
+public class WebClientConfig {
     HttpClient httpClient = HttpClient.create()
         .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 1000);
     @Value("${DATA.GO.KR.KEY}")
