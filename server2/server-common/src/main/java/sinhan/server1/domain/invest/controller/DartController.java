@@ -22,14 +22,15 @@ public class DartController {
     }
 
     //개별 종목 조회하기
-    @GetMapping("/stocks/{ticker}/{year}")
-    public ApiResult getStockDetail(@PathVariable("ticker") String ticker,@PathVariable("year") String year){
-        StockFindDetailResponseDTO result = stockService.getStockDetail(ticker,year);
-        return ApiResult.responseSuccess(result);
-    }
     @GetMapping("/stocks/{ticker}")
     public ApiResult getStock(@PathVariable("ticker") String ticker){
-           StockFindCurrentResponseDTO result = stockService.getStockCurrent(ticker);
+        System.out.println(ticker);
+        StockFindCurrentResponseDTO result = stockService.getStockCurrent(ticker);
+        return ApiResult.responseSuccess(result);
+    }
+    @GetMapping("/stocks/{ticker}/{year}")
+    public ApiResult getStock(@PathVariable("ticker") String ticker,@PathVariable("year") String year){
+        StockFindDetailResponseDTO result = stockService.getStockDetail(ticker,year);
             return ApiResult.responseSuccess(result);
         }
 

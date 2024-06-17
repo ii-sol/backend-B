@@ -1,7 +1,13 @@
 package sinhan.server1.domain.invest.service;
 
+import java.net.URI;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.util.UriBuilder;
+import reactor.core.publisher.Mono;
 import sinhan.server1.domain.invest.dto.StockFindCurrentResponseDTO;
 import sinhan.server1.domain.invest.dto.StockFindDetailResponseDTO;
 import sinhan.server1.domain.invest.entity.StockDivideOutput;
@@ -12,6 +18,7 @@ import sinhan.server1.domain.invest.repository.StockRepository;
 @Service
 public class StockService {
     StockRepository stockRepository;
+
 
     @Autowired
     StockService(StockRepository stockRepository){
@@ -53,4 +60,5 @@ public class StockService {
                 .changeSign(stockDuraionPriceOutput.getOutput1().getChangeSign())
                 .build();
         }
+
 }
