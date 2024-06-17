@@ -5,7 +5,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import sinhan.server1.domain.tempuser.TempUser;
 
 import java.time.LocalDateTime;
 

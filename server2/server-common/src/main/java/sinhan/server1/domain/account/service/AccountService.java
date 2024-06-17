@@ -12,9 +12,6 @@ import sinhan.server1.domain.account.entity.Account;
 import sinhan.server1.domain.account.repository.AccountHistoryRepository;
 import sinhan.server1.domain.account.repository.AccountRepository;
 import sinhan.server1.domain.tempuser.TempUser;
-import sinhan.server1.domain.tempuser.TempUserRepository;
-import sinhan.server1.global.exception.CustomException;
-import sinhan.server1.global.exception.ErrorCode;
 import sinhan.server1.global.utils.account.AccountUtils;
 import sinhan.server1.global.utils.user.UserUtils;
 

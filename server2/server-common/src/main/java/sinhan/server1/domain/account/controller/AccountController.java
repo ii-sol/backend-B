@@ -8,7 +8,6 @@ import sinhan.server1.domain.account.dto.AccountHistoryFindAllResponse;
 import sinhan.server1.domain.account.dto.AccountTransmitOneRequest;
 import sinhan.server1.domain.account.dto.AccountTransmitOneResponse;
 import sinhan.server1.domain.account.service.AccountService;
-import sinhan.server1.domain.tempuser.TempUser;
 import sinhan.server1.global.utils.ApiUtils;
 
 import java.util.List;
