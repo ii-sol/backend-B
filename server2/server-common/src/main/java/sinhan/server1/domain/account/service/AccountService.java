@@ -6,6 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import sinhan.server1.domain.account.dto.AccountFindOneResponse;
 import sinhan.server1.domain.account.dto.AccountHistoryFindAllResponse;
+import sinhan.server1.domain.account.dto.AccountTransmitOneRequest;
+import sinhan.server1.domain.account.dto.AccountTransmitOneResponse;
 import sinhan.server1.domain.account.entity.Account;
 import sinhan.server1.domain.account.repository.AccountHistoryRepository;
 import sinhan.server1.domain.account.repository.AccountRepository;
@@ -13,6 +15,8 @@ import sinhan.server1.domain.tempuser.TempUser;
 import sinhan.server1.domain.tempuser.TempUserRepository;
 import sinhan.server1.global.exception.CustomException;
 import sinhan.server1.global.exception.ErrorCode;
+import sinhan.server1.global.utils.account.AccountUtils;
+import sinhan.server1.global.utils.user.UserUtils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -27,18 +31,19 @@ public class AccountService {
 
     private final AccountRepository accountRepository;
     private final AccountHistoryRepository accountHistoryRepository;
-    private final TempUserRepository tempUserRepository;
+    private final AccountUtils accountUtils;
+    private final UserUtils userUtils;
 
     //계좌 개별 조회
     public AccountFindOneResponse findAccount(long serialNumber, Integer status) {
-        TempUser tempUser = getUser(serialNumber);
+        TempUser tempUser = userUtils.getUser(serialNumber);
         Account findAccount = accountRepository.findByUserAndStatus(tempUser, status);
         return AccountFindOneResponse.from(findAccount);
     }
 
-    //계좌 내역 조
+    //계좌 내역 조회
     public List<AccountHistoryFindAllResponse> findAccountHistory(long serialNumber, Integer year, Integer month, Integer status) {
-        TempUser tempUser = getUser(serialNumber);
+        TempUser tempUser = userUtils.getUser(serialNumber);
         Account findAccount = accountRepository.findByUserAndStatus(tempUser, status);
 
         LocalDate start = LocalDate.of(year,month,1);
@@ -49,10 +54,10 @@ public class AccountService {
         List<AccountHistoryFindAllResponse> findAccountHistories = accountHistoryRepository.findByUserAndCreateDateBetween(findAccount, startDateTime, endDateTime)
                 .stream()
                 .map(history -> {
-                            Account senderAccount = getAccount(history.getSenderAccountNum());
-                            Account recieverAccount = getAccount(history.getReceiverAccountNum());
-                            TempUser sender = getUser(senderAccount.getUser().getId());
-                            TempUser reciever = getUser(recieverAccount.getUser().getId());
+                            Account senderAccount = accountUtils.getAccount(history.getSenderAccountNum());
+                            Account recieverAccount = accountUtils.getAccount(history.getReceiverAccountNum());
+                            TempUser sender = userUtils.getUser(senderAccount.getUser().getId());
+                            TempUser reciever = userUtils.getUser(recieverAccount.getUser().getId());
 
                             return AccountHistoryFindAllResponse.of(history, sender, reciever);
                         }
@@ -61,15 +66,14 @@ public class AccountService {
         return findAccountHistories;
     }
 
-    //사용자 조회
-    private TempUser getUser(long serialNumber){
-        return tempUserRepository.findBySerialNumber(serialNumber)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
-    }
+    // 이체하기
+    public AccountTransmitOneResponse transferMoney(AccountTransmitOneRequest request) {
+        Account senderAccount = accountUtils.getAccount(request.getSendAccountNum());
+        Account recieverAccount = accountUtils.getAccount(request.getReceiveAccountNum());
+        TempUser reciever = userUtils.getUser(recieverAccount.getUser().getId());
 
-    //계좌 조회
-    private Account getAccount(String accountNum){
-        return accountRepository.findByAccountNum(accountNum)
-                .orElseThrow(()-> new CustomException(ErrorCode.NOT_FOUND_ACCOUNT));
+        accountUtils.transferMoneyByAccount(senderAccount, recieverAccount, request.getAmount(), 1);
+
+        return AccountTransmitOneResponse.of(senderAccount, request, reciever);
     }
 }

@@ -31,10 +31,10 @@ public class AccountHistory {
     private LocalDateTime createDate;
 
     @Column(name = "message_code", nullable = true)
-    private Byte messageCode;
+    private int messageCode;
 
     @Builder
-    public AccountHistory(String senderAccountNum, String receiverAccountNum, int amount, LocalDateTime createDate, Byte messageCode) {
+    public AccountHistory(String senderAccountNum, String receiverAccountNum, int amount, LocalDateTime createDate, int messageCode) {
         this.senderAccountNum = senderAccountNum;
         this.receiverAccountNum = receiverAccountNum;
         this.amount = amount;

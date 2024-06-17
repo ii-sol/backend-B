@@ -38,4 +38,7 @@ public class Account {
         this.status = status;
     }
 
+    public void setBalance(Integer balance) {
+        this.balance = balance;
+    }
 }
