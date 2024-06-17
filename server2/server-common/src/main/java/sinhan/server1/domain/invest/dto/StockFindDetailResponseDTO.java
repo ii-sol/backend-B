@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import sinhan.server1.domain.invest.entity.StockCartDate;
 
@@ -40,4 +41,5 @@ public class StockFindDetailResponseDTO {
             System.out.println(ex);
         }
     }
+
 }

@@ -11,19 +11,14 @@ import sinhan.server1.domain.utils.ApiResult;
 
 @RestController
 public class DartController {
-
-    @Autowired
     StockService stockService;
-
+    @Autowired
+    DartController(StockService stockService){
+        this.stockService = stockService;
+    }
     @GetMapping("/stocks")
     public ApiResult getStocks(){
         return ApiResult.responseSuccess("asd");
-    }
-
-    @GetMapping("stocks/{ticker}")
-    public ApiResult getStock(@PathVariable("ticker") String ticker){
-        StockFindCurrentResponseDTO result = stockService.getStockCurrent(ticker);
-        return ApiResult.responseSuccess(result);
     }
 
     //개별 종목 조회하기
@@ -32,4 +27,11 @@ public class DartController {
         StockFindDetailResponseDTO result = stockService.getStockDetail(ticker,year);
         return ApiResult.responseSuccess(result);
     }
+    @GetMapping("/stocks/{ticker}")
+    public ApiResult getStock(@PathVariable("ticker") String ticker){
+           StockFindCurrentResponseDTO result = stockService.getStockCurrent(ticker);
+            return ApiResult.responseSuccess(result);
+        }
+
+
 }
