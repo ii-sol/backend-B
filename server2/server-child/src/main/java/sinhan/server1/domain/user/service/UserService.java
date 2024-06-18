@@ -7,18 +7,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import sinhan.server1.domain.user.dto.*;
-import sinhan.server1.domain.user.entity.Family;
 import sinhan.server1.domain.user.entity.Child;
+import sinhan.server1.domain.user.entity.Family;
 import sinhan.server1.domain.user.entity.Parents;
-import sinhan.server1.domain.user.repository.FamilyRepository;
 import sinhan.server1.domain.user.repository.ChildRepository;
+import sinhan.server1.domain.user.repository.FamilyRepository;
 import sinhan.server1.domain.user.repository.ParentsRepository;
 import sinhan.server1.global.security.dto.FamilyInfoResponse;
 import sinhan.server1.global.utils.exception.AuthException;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -32,7 +31,7 @@ public class UserService {
     private FamilyRepository familyRepository;
 
     @Transactional
-    public ChildFindOneResponse getUser(long sn){
+    public ChildFindOneResponse getUser(long sn) {
         Child child = childRepository.findBySerialNum(sn)
                 .orElseThrow(() -> new NoSuchElementException("사용자가 존재하지 않습니다."));
 
@@ -56,14 +55,16 @@ public class UserService {
     }
 
     @Transactional
-    public FamilyFindOneResponse connectFamily(long sn, String phoneNum) {
+    public boolean connectFamily(long sn, String phoneNum) {
         Child child = childRepository.findBySerialNum(sn)
                 .orElseThrow(() -> new NoSuchElementException("사용자가 존재하지 않습니다."));
 
         Parents parents = parentsRepository.findByPhoneNum(phoneNum)
                 .orElseThrow(() -> new NoSuchElementException("부모 사용자가 존재하지 않습니다."));
 
-        return familyRepository.save(new Family(child, parents)).convertToFamilyFindOneResponse();
+        Family family = familyRepository.save(new Family(child, parents));
+
+        return !familyRepository.findMyFamilyInfo(family.getId()).isEmpty();
     }
 
     @Transactional

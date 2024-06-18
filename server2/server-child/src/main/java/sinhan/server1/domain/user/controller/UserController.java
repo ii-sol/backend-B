@@ -65,9 +65,7 @@ public class UserController {
     public ApiUtils.ApiResult connectFamily(@RequestBody String phoneNum) throws Exception {
         UserInfoResponse userInfo = jwtService.getUserInfo(jwtService.getAccessToken());
 
-        FamilyFindOneResponse family = userService.connectFamily(userInfo.getSn(), phoneNum);
-
-        return family != null
+        return userService.connectFamily(userInfo.getSn(), phoneNum)
                 ? success("가족 관계가 생성되었습니다.")
                 : error("가족 관계가 생성되지 않았습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -79,16 +77,6 @@ public class UserController {
         return userService.disconnectFamily(userInfo.getSn(), familySn)
                 ? success("가족 관계가 삭제되었습니다.")
                 : error("가족 관계가 삭제되지 않았습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    private boolean isFamilyUser(long familySn) {
-        // TODO: 부모 사용자 확인 이벤트 등록 - 콜백
-        return true;
-    }
-
-    private boolean isConnected(long familySn) {
-        // TODO: 부모 서버 가족 관계 생성 이벤트 등록 - 콜백
-        return true;
     }
 
     @GetMapping("/users/phones")
