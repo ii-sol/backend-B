@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 import sinhan.server1.domain.user.dto.*;
 import sinhan.server1.domain.user.entity.Family;
 import sinhan.server1.domain.user.entity.Child;
+import sinhan.server1.domain.user.entity.Parents;
 import sinhan.server1.domain.user.repository.FamilyRepository;
 import sinhan.server1.domain.user.repository.ChildRepository;
+import sinhan.server1.domain.user.repository.ParentsRepository;
 import sinhan.server1.global.security.dto.FamilyInfoResponse;
 import sinhan.server1.global.utils.exception.AuthException;
 
@@ -26,6 +28,7 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
     private ChildRepository childRepository;
+    private ParentsRepository parentsRepository;
     private FamilyRepository familyRepository;
 
     @Transactional
@@ -57,7 +60,10 @@ public class UserService {
         Child child = childRepository.findBySerialNum(familySaveRequest.getUserSn())
                 .orElseThrow(() -> new NoSuchElementException("사용자가 존재하지 않습니다."));
 
-        return familyRepository.save(new Family(child, familySaveRequest.getFamilySn())).convertToFamilyFindOneResponse();
+        Parents parents = parentsRepository.findByPhoneNum(familySaveRequest.getPhoneNum())
+                .orElseThrow(() -> new NoSuchElementException("부모 사용자가 존재하지 않습니다."));
+
+        return familyRepository.save(new Family(child, parents)).convertToFamilyFindOneResponse();
     }
 
     @Transactional

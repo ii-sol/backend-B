@@ -66,16 +66,12 @@ public class UserController {
     public ApiUtils.ApiResult connectFamily(@RequestBody FamilySaveRequest familySaveRequest) throws Exception {
         UserInfoResponse userInfo = jwtService.getUserInfo(jwtService.getAccessToken());
         familySaveRequest.setUserSn(userInfo.getSn());
-        if (!isFamilyUser(familySaveRequest.getFamilySn())) {
-            throw new NoSuchElementException("부모 사용자가 존재하지 않습니다.");
-        }
-        if (isConnected(familySaveRequest.getFamilySn())) {
-            FamilyFindOneResponse family = userService.connectFamily(familySaveRequest);
-            if (family != null) {
-                return success("가족 관계가 생성되었습니다.");
-            }
-        }
-        return error("가족 관계가 생성되지 않았습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+
+        FamilyFindOneResponse family = userService.connectFamily(familySaveRequest);
+
+        return family != null
+                ? success("가족 관계가 생성되었습니다.")
+                : error("가족 관계가 생성되지 않았습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @DeleteMapping("/users/{family-sn}")
