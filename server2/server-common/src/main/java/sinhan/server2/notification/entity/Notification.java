@@ -22,15 +22,15 @@ public class Notification {
     Long receiverSerialNumber;
 
     String sender; // 별명
-    int messageCode; // 메세지 코드
+    String message; // 메세지 코드
     int functionCode; // 기능
 
     LocalDateTime createDate;
 
     @Builder
-    public Notification(int messageCode, int functionCode, Long receiverSerialNumber, String sender, LocalDateTime createDate) {
+    public Notification(String message, int functionCode, Long receiverSerialNumber, String sender, LocalDateTime createDate) {
         this.notificationSerialNumber = UUID.randomUUID().toString();
-        this.messageCode = messageCode;
+        this.message = message;
         this.functionCode = functionCode;
         this.receiverSerialNumber = receiverSerialNumber;
         this.sender = sender;

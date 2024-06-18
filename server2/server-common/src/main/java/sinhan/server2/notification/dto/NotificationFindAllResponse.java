@@ -14,14 +14,14 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class NotificationFindAllResponse {
     private int functionCode; // 기능
-    private int messageCode;
+    private String messageCode;
     private String sender; // 별명
     LocalDateTime createDate;
 
     public static NotificationFindAllResponse from(Notification notification){
         return NotificationFindAllResponse.builder()
                 .functionCode(notification.getFunctionCode())
-                .messageCode(notification.getMessageCode())
+                .messageCode(notification.getMessage())
                 .sender(notification.getSender())
                 .createDate(notification.getCreateDate())
                 .build();

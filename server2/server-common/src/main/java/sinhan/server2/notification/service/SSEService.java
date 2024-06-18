@@ -11,9 +11,12 @@ import sinhan.server2.domain.tempuser.TempUser;
 import sinhan.server2.domain.tempuser.TempUserRepository;
 import sinhan.server2.global.exception.CustomException;
 import sinhan.server2.global.exception.ErrorCode;
+import sinhan.server2.notification.utils.MessageHandler;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -33,7 +36,9 @@ public class SSEService {
         sseEmitters.put(serialNumber, emitter);
 
         //이부분은 원래 없음
-        sendNotification(serialNumber, "alfo", 1, 1);
+        String newMesssage= MessageHandler.getMessage(0,"알파코");
+        sendNotification(serialNumber, "alfo", 1, newMesssage);
+        //여기까지 원래 없음
 
         emitter.onCompletion(()-> sseEmitters.remove(serialNumber));
         emitter.onTimeout(()->{
@@ -48,10 +53,10 @@ public class SSEService {
         return emitter;
     }
 
-    //알람 보내기
-    public void sendNotification(Long serialNumber, String senderName, Integer functionCode, Integer messageCode){
+    //알람 보내기 => message는 각자 자기 도메인에서 MessageHandler.getMessage(여러 인수들); 해서 나온거 가져오기
+    public void sendNotification(Long serialNumber, String senderName, Integer functionCode, String message){
         SseEmitter emitter = sseEmitters.get(serialNumber);
-        Notification savedNotification = saveNotification(serialNumber, senderName, functionCode, messageCode);
+        Notification savedNotification = saveNotification(serialNumber, senderName, functionCode, message);
     //emitter가 null인 경우
         try{
             emitter.send(SseEmitter.event().name("notification").data(savedNotification));
@@ -69,7 +74,7 @@ public class SSEService {
 
 
     //private : 알림 저장하기
-    private Notification saveNotification(Long serialNumber, String senderName, Integer functionCode, Integer messageCode){
+    private Notification saveNotification(Long serialNumber, String senderName, Integer functionCode, String message){
          TempUser receiver = tempUserRepository.findBySerialNumber(serialNumber);
 
         System.out.println(receiver.getSerialNumber());
@@ -78,8 +83,8 @@ public class SSEService {
                 .receiverSerialNumber(serialNumber)
                 .sender(senderName)
                 .functionCode(functionCode)
-                .messageCode(messageCode)
-                .createDate(LocalDateTime.now())
+                .message(message)
+                .createDate(ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime())
                 .build();
 
         //notification 몽고 디비에 저장
