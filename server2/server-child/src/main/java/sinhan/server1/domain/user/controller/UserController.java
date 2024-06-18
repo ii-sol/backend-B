@@ -111,6 +111,16 @@ public class UserController {
         }
     }
 
+    @GetMapping("/auth/useful-phone")
+    public ApiUtils.ApiResult checkPhone(@Valid @RequestBody PhoneFindRequest phoneFindRequest, HttpServletResponse response) {
+        if (userService.checkPhone(phoneFindRequest)) {
+            return success(true);
+        } else {
+            response.setStatus(HttpStatus.CONFLICT.value());
+            return error(false, HttpStatus.CONFLICT);
+        }
+    }
+
     @PostMapping("/auth/login")
     public ApiUtils.ApiResult login(@Valid @RequestBody LoginInfoFindRequest loginInfoFindRequest, HttpServletResponse response) throws AuthException, JsonProcessingException {
         try {

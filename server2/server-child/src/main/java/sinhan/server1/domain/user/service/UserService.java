@@ -109,6 +109,11 @@ public class UserService {
     }
 
     @Transactional
+    public boolean checkPhone(PhoneFindRequest phoneFindRequest) {
+        return childRepository.findByPhoneNum(phoneFindRequest.getPhoneNum()).isEmpty();
+    }
+
+    @Transactional
     public ChildFindOneResponse login(@Valid LoginInfoFindRequest loginInfoFindRequest) throws AuthException {
         Child child = childRepository.findByPhoneNum(loginInfoFindRequest.getPhoneNum()).orElseThrow(() -> new AuthException("INVALID_CREDENTIALS"));
 
