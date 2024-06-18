@@ -38,13 +38,13 @@ public class NotificationController {
 
     //개별 알림 삭제하기
     @DeleteMapping("/{nsn}")
-    public ApiUtils.ApiResult deleteNotification(TempUser tempUser, @PathVariable("nsn") String nsn){
+    public ApiUtils.ApiResult deleteNotification( @PathVariable("nsn") String nsn){
         sseService.deleteNotification(nsn);
         return success(null);
     }
 
     //알림 전체 삭제하기
-    @DeleteMapping("/{rsn}")
+    @DeleteMapping("/all/{rsn}")
     public ApiUtils.ApiResult deleteNotification(@PathVariable("rsn") Long rsn){
         sseService.deleteAllNotifications(rsn);
         return success(null);
