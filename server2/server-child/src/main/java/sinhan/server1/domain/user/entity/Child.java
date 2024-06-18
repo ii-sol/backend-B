@@ -34,7 +34,7 @@ public class Child {
     @Column(nullable = false, columnDefinition = "TINYINT UNSIGNED DEFAULT 50")
     private int score = 50;
 
-    public Child(long serialNum, String phoneNum, String name, Date birthDate, String accountInfo, int profileId) {
+    public User(long serialNum, String phoneNum, String name, Date birthDate, String accountInfo, int profileId) {
         this.serialNum = serialNum;
         this.phoneNum = phoneNum;
         this.name = name;
