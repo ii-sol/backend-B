@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class ChildService {
+public class UserService {
 
     private final PasswordEncoder passwordEncoder;
     private ChildRepository childRepository;

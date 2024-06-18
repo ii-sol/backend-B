@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import sinhan.server1.domain.user.dto.*;
-import sinhan.server1.domain.user.service.ChildService;
+import sinhan.server1.domain.user.service.UserService;
 import sinhan.server1.global.security.JwtService;
 import sinhan.server1.global.security.dto.FamilyInfoResponse;
 import sinhan.server1.global.security.dto.JwtTokenResponse;
@@ -28,9 +28,9 @@ import static sinhan.server1.global.utils.ApiUtils.success;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/users")
-public class ChildController {
+public class UserController {
 
-    private ChildService childService;
+    private UserService userService;
     private JwtService jwtService;
 
     @GetMapping("/users/{sn}")
@@ -49,7 +49,7 @@ public class ChildController {
             }
         }
 
-        ChildFindOneResponse user = childService.getUser(sn);
+        ChildFindOneResponse user = userService.getUser(sn);
         return user.getSerialNumber() == sn ? success(user) : error("잘못된 사용자 요청입니다.", HttpStatus.BAD_REQUEST);
     }
 
@@ -58,7 +58,7 @@ public class ChildController {
         UserInfoResponse userInfo = jwtService.getUserInfo(jwtService.getAccessToken());
         childUpdateRequest.setSerialNum(userInfo.getSn());
 
-        ChildFindOneResponse user = childService.updateUser(childUpdateRequest);
+        ChildFindOneResponse user = userService.updateUser(childUpdateRequest);
         return user != null ? success(user) : error("잘못된 사용자 요청입니다.", HttpStatus.BAD_REQUEST);
     }
 
@@ -70,7 +70,7 @@ public class ChildController {
             throw new NoSuchElementException("부모 사용자가 존재하지 않습니다.");
         }
         if (isConnected(familySaveRequest.getFamilySn())) {
-            FamilyFindOneResponse family = childService.connectFamily(familySaveRequest);
+            FamilyFindOneResponse family = userService.connectFamily(familySaveRequest);
             if (family != null) {
                 return success("가족 관계가 생성되었습니다.");
             }
@@ -87,7 +87,7 @@ public class ChildController {
         }
 
         if (isDisconnected(familySn)) {
-            boolean isDisconnected = childService.disconnectFamily(userInfo.getSn(), familySn);
+            boolean isDisconnected = userService.disconnectFamily(userInfo.getSn(), familySn);
 
             if (isDisconnected) {
                 return success("가족 관계가 삭제되었습니다.");
@@ -114,7 +114,7 @@ public class ChildController {
 
     @GetMapping("/users/phones")
     public ApiUtils.ApiResult getPhones() {
-        List<String> phones = childService.getPhones();
+        List<String> phones = userService.getPhones();
 
         return phones.isEmpty() ? error("전화번호부를 가져오지 못했습니다.", HttpStatus.NOT_FOUND) : success(phones);
     }
@@ -123,7 +123,7 @@ public class ChildController {
     public ApiUtils.ApiResult updateScore(@PathVariable int change) throws Exception {
         UserInfoResponse userInfo = jwtService.getUserInfo(jwtService.getAccessToken());
 
-        return success(childService.updateScore(new ScoreUpdateRequest(userInfo.getSn(), change)));
+        return success(userService.updateScore(new ScoreUpdateRequest(userInfo.getSn(), change)));
     }
 
     @GetMapping("/auth/main")
@@ -133,7 +133,7 @@ public class ChildController {
 
     @PostMapping("/auth/join")
     public ApiUtils.ApiResult join(@Valid @RequestBody JoinInfoSaveRequest joinInfoSaveRequest, HttpServletResponse response) {
-        ChildFindOneResponse user = childService.join(joinInfoSaveRequest);
+        ChildFindOneResponse user = userService.join(joinInfoSaveRequest);
 
         if (user != null) {
             return success("가입되었습니다.");
@@ -146,8 +146,8 @@ public class ChildController {
     @PostMapping("/auth/login")
     public ApiUtils.ApiResult login(@Valid @RequestBody LoginInfoFindRequest loginInfoFindRequest, HttpServletResponse response) throws AuthException, JsonProcessingException {
         try {
-            ChildFindOneResponse user = childService.login(loginInfoFindRequest);
-            List<FamilyInfoResponse> myFamilyInfo = childService.getFamilyInfo(user.getSerialNumber());
+            ChildFindOneResponse user = userService.login(loginInfoFindRequest);
+            List<FamilyInfoResponse> myFamilyInfo = userService.getFamilyInfo(user.getSerialNumber());
             setFamilyName(myFamilyInfo);
 
             myFamilyInfo.forEach(info -> log.info("Family Info - SN: {}, Name: {}", info.getSn(), info.getName()));
@@ -181,7 +181,7 @@ public class ChildController {
 
         try {
             long sn = jwtService.getUserInfo(refreshToken).getSn();
-            List<FamilyInfoResponse> myFamilyInfo = childService.getFamilyInfo(sn);
+            List<FamilyInfoResponse> myFamilyInfo = userService.getFamilyInfo(sn);
             setFamilyName(myFamilyInfo);
 
             String newAccessToken = jwtService.createAccessToken(sn, myFamilyInfo);
