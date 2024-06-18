@@ -123,7 +123,7 @@ public class UserService {
     public List<FamilyInfoResponse> getFamilyInfo(long sn) {
         return familyRepository.findMyFamilyInfo(sn)
                 .stream()
-                .map(fi -> new FamilyInfoResponse(fi.getSn()))
+                .map(myFamily -> new FamilyInfoResponse(myFamily.getSn(), myFamily.getName()))
                 .collect(Collectors.toList());
     }
 }
