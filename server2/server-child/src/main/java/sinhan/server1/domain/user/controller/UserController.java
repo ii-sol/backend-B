@@ -26,7 +26,6 @@ import static sinhan.server1.global.utils.ApiUtils.success;
 @Slf4j
 @RestController
 @AllArgsConstructor
-@RequestMapping("/users")
 public class UserController {
 
     private UserService userService;
