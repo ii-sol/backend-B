@@ -10,5 +10,5 @@ import lombok.Setter;
 public class FamilySaveRequest {
 
     private long userSn;
-    private final long familySn;
+    private final String phoneNum;
 }
