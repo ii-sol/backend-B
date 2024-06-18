@@ -1,4 +1,4 @@
-package sinhan.server2.notification.utils;
+package sinhan.server2.global.notification.utils;
 
 import sinhan.server2.global.exception.CustomException;
 import sinhan.server2.global.exception.ErrorCode;

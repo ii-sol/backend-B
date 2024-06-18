@@ -1,20 +1,20 @@
-package sinhan.server2.notification.service;
+package sinhan.server2.global.notification.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-import sinhan.server2.notification.dto.NotificationFindAllResponse;
-import sinhan.server2.notification.entity.Notification;
+import sinhan.server2.global.notification.dto.NotificationFindAllResponse;
+import sinhan.server2.global.notification.entity.Notification;
 import sinhan.server2.domain.tempuser.TempUser;
 import sinhan.server2.domain.tempuser.TempUserRepository;
 import sinhan.server2.global.exception.CustomException;
 import sinhan.server2.global.exception.ErrorCode;
-import sinhan.server2.notification.utils.MessageHandler;
+import sinhan.server2.global.notification.mongo.NotificationRepository;
+import sinhan.server2.global.notification.utils.MessageHandler;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -28,7 +28,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SSEService {
     private final Map<Long, SseEmitter> sseEmitters = new ConcurrentHashMap<>();
     private final TempUserRepository tempUserRepository;
-    private final sinhan.server2.notification.mongo.newNotificationRepository newNotificationRepository;
+    private final NotificationRepository NotificationRepository;
 
     //SSE에 등록
     public SseEmitter subscribe(Long serialNumber) {
@@ -63,7 +63,7 @@ public class SSEService {
         } catch (IOException e) {
 
             //몽고 디비에서 저장된거 삭제하기
-            newNotificationRepository.deleteByNotificationSerialNumber(savedNotification.getNotificationSerialNumber());
+            NotificationRepository.deleteByNotificationSerialNumber(savedNotification.getNotificationSerialNumber());
             //emitter를 삭제해야하나? => 재시도 로직을 넣어야 하나? => 재시도 횟수
             sseEmitters.remove(serialNumber);
 
@@ -88,7 +88,7 @@ public class SSEService {
                 .build();
 
         //notification 몽고 디비에 저장
-        newNotificationRepository.save(notification);
+        NotificationRepository.save(notification);
 
         return notification;
 
@@ -96,7 +96,7 @@ public class SSEService {
 
     //알람 전체 조회
     public List<NotificationFindAllResponse> findAllNotifications(Long receiverSerialNumber) {
-        return newNotificationRepository.findAllByReceiverSerialNumber(receiverSerialNumber)
+        return NotificationRepository.findAllByReceiverSerialNumber(receiverSerialNumber)
                 .stream().map(notification -> {
                     return NotificationFindAllResponse.from(notification);
                 })
@@ -105,12 +105,12 @@ public class SSEService {
 
     //알람 개별 삭제
     public void deleteNotification(String notificationSerailNumber) {
-        newNotificationRepository.deleteByNotificationSerialNumber(notificationSerailNumber);
+        NotificationRepository.deleteByNotificationSerialNumber(notificationSerailNumber);
     }
 
     //알람 전체 삭제
     public void deleteAllNotifications(Long receiverSerialNumber){
-        newNotificationRepository.deleteByReceiverSerialNumber(receiverSerialNumber);
+        NotificationRepository.deleteByReceiverSerialNumber(receiverSerialNumber);
     }
 
 }

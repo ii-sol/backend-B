@@ -1,10 +1,10 @@
-package sinhan.server2.notification.dto;
+package sinhan.server2.global.notification.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import sinhan.server2.notification.entity.Notification;
+import sinhan.server2.global.notification.entity.Notification;
 
 import java.time.LocalDateTime;
 

@@ -1,14 +1,12 @@
-package sinhan.server2.notification.controller;
+package sinhan.server2.global.notification.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-import sinhan.server2.domain.tempuser.TempUser;
-import sinhan.server2.global.utils.ApiResult;
+import sinhan.server2.global.notification.dto.NotificationFindAllResponse;
 import sinhan.server2.global.utils.ApiUtils;
-import sinhan.server2.notification.dto.NotificationFindAllResponse;
-import sinhan.server2.notification.service.SSEService;
+import sinhan.server2.global.notification.service.SSEService;
 
 import java.util.List;
 

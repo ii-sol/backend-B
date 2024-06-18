@@ -1,4 +1,4 @@
-package sinhan.server2.notification.utils;
+package sinhan.server2.global.notification.utils;
 
 import java.util.HashMap;
 import java.util.Map;

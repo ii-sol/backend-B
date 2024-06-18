@@ -1,4 +1,4 @@
-package sinhan.server2.notification.entity;
+package sinhan.server2.global.notification.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
