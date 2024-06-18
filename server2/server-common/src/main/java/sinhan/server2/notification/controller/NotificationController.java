@@ -10,6 +10,8 @@ import sinhan.server2.global.utils.ApiUtils;
 import sinhan.server2.notification.dto.NotificationFindAllResponse;
 import sinhan.server2.notification.service.SSEService;
 
+import java.util.List;
+
 import static sinhan.server2.global.utils.ApiUtils.success;
 
 @RestController
@@ -37,7 +39,7 @@ public class NotificationController {
     //해당 사용자의 모든 알림 가져오기
     @GetMapping("/{usn}")
     public ApiUtils.ApiResult findAllNotifications(@PathVariable("usn") Long usn){
-        NotificationFindAllResponse response = sseService.findAllNotifications(usn);
+        List<NotificationFindAllResponse> response = sseService.findAllNotifications(usn);
         return success(response);
     }
 
