@@ -21,7 +21,7 @@ public class LoanController {
         this.loanService = loanService;
     }
 
-    @GetMapping("/child/loan")
+    @GetMapping("/loan")
     public ApiResult<List<LoanDto>> getChildLoan() {
         int childId = 1;
         List<LoanDto> loans = loanService.getLoanByChildId(childId);
@@ -44,21 +44,21 @@ public class LoanController {
         return ApiUtils.success("Loan created successfully");
     }
 
-    @PostMapping("/child/loan/accept")
+    @PostMapping("/loan/accept")
     public ApiResult<String> acceptChildLoan(@RequestParam int loanId) {
         loanService.acceptLoan(loanId);
 
         return ApiUtils.success("Loan accepted successfully");
     }
 
-    @PostMapping("/child/loan/refuse")
+    @PostMapping("/loan/refuse")
     public ApiResult<String> refuseChildLoan(@RequestParam int loanId) {
         loanService.refuseLoan(loanId);
 
         return ApiUtils.success("Loan refused successfully");
     }
 
-    @GetMapping("/child/loan/detail/{loanId}")
+    @GetMapping("/loan/detail/{loanId}")
     public ApiResult<LoanDto> getChildLoan(@PathVariable int loanId) {
         LoanDto loanDto = loanService.findOne(loanId);
 

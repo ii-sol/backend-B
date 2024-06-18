@@ -73,6 +73,7 @@ public class LoanDto {
         this.period = period;
         this.childId = childId;
         this.parentId = parentId;
+        this.parentName = "엄마";
         this.interestRate = interestRate;
         this.amount = amount;
         this.balance = balance;
