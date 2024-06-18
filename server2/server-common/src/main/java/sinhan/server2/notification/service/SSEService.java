@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+import sinhan.server2.notification.dto.NotificationFindAllResponse;
 import sinhan.server2.notification.entity.Notification;
 import sinhan.server2.domain.tempuser.TempUser;
 import sinhan.server2.domain.tempuser.TempUserRepository;
@@ -13,6 +14,7 @@ import sinhan.server2.global.exception.ErrorCode;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -87,6 +89,15 @@ public class SSEService {
 
     }
 
+    //알람 전체 조회
+    public List<NotificationFindAllResponse> findAllNotifications(Long receiverSerialNumber) {
+        return newNotificationRepository.findAllByReceiverSerialNumber(receiverSerialNumber)
+                .stream().map(notification -> {
+                    return NotificationFindAllResponse.from(notification);
+                })
+                .toList();
+    }
+
     //알람 개별 삭제
     public void deleteNotification(String notificationSerailNumber) {
         newNotificationRepository.deleteByNotificationSerialNumber(notificationSerailNumber);
@@ -96,4 +107,5 @@ public class SSEService {
     public void deleteAllNotifications(Long receiverSerialNumber){
         newNotificationRepository.deleteByReceiverSerialNumber(receiverSerialNumber);
     }
+
 }
