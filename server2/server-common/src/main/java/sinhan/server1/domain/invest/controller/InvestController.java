@@ -3,7 +3,7 @@ package sinhan.server1.domain.invest.controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import sinhan.server1.domain.utils.ApiResult;
+import sinhan.server1.global.utils.ApiResult;
 
 public class InvestController {
     //투자 거래 내역 조회하기(부모)
