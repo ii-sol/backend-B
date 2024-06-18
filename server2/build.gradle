@@ -35,7 +35,6 @@ subprojects { // 각 모듈에 적용할 공통 설정
         compileOnly group: 'org.projectlombok', name: 'lombok'
         implementation group: 'com.mysql', name: 'mysql-connector-j'
         implementation 'org.springframework.boot:spring-boot-starter-validation'
-        implementation 'org.springframework.boot:spring-boot-starter-security'
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
         testImplementation 'org.springframework.amqp:spring-rabbit-test'
         testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
@@ -61,7 +60,11 @@ tasks.named('test') {
 project(':server-common') { // 컴파일 시 multi-module-database 로딩
 
     dependencies {
-
+        implementation 'org.springframework.boot:spring-boot-starter-security'
+        implementation 'io.jsonwebtoken:jjwt-api:0.12.5'
+        runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.5'
+        runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.5'
+        implementation 'io.github.cdimascio:dotenv-java:3.0.0'
     }
 }
 
