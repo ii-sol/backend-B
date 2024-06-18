@@ -62,10 +62,11 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public ApiUtils.ApiResult connectFamily(@RequestBody String phoneNum) throws Exception {
+    public ApiUtils.ApiResult connectFamily(@RequestBody FamilySaveRequest familySaveRequest) throws Exception {
         UserInfoResponse userInfo = jwtService.getUserInfo(jwtService.getAccessToken());
+        familySaveRequest.setSn(userInfo.getSn());
 
-        return userService.connectFamily(userInfo.getSn(), phoneNum)
+        return userService.connectFamily(familySaveRequest)
                 ? success("가족 관계가 생성되었습니다.")
                 : error("가족 관계가 생성되지 않았습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -127,10 +128,6 @@ public class UserController {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return error("로그인에 실패하였습니다. " + e.getMessage(), HttpStatus.UNAUTHORIZED);
         }
-    }
-
-    private void setFamilyName(List<FamilyInfoResponse> myFamilyInfo) {
-        // TODO: 부모 이름 가져오기 이벤트 등록 - 콜백
     }
 
     @PostMapping("/auth/logout")

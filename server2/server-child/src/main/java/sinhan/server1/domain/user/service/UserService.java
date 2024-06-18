@@ -55,14 +55,14 @@ public class UserService {
     }
 
     @Transactional
-    public boolean connectFamily(long sn, String phoneNum) {
-        Child child = childRepository.findBySerialNum(sn)
+    public boolean connectFamily(FamilySaveRequest familySaveRequest) {
+        Child child = childRepository.findBySerialNum(familySaveRequest.getSn())
                 .orElseThrow(() -> new NoSuchElementException("사용자가 존재하지 않습니다."));
 
-        Parents parents = parentsRepository.findByPhoneNum(phoneNum)
+        Parents parents = parentsRepository.findByPhoneNum(familySaveRequest.getPhoneNum())
                 .orElseThrow(() -> new NoSuchElementException("부모 사용자가 존재하지 않습니다."));
 
-        Family family = familyRepository.save(new Family(child, parents));
+        Family family = familyRepository.save(new Family(child, parents, familySaveRequest.getParentsAlias()));
 
         return !familyRepository.findMyFamilyInfo(family.getId()).isEmpty();
     }
@@ -121,6 +121,9 @@ public class UserService {
 
     @Transactional()
     public List<FamilyInfoResponse> getFamilyInfo(long sn) {
-        return familyRepository.findMyFamilyInfo(sn).stream().map(fi -> new FamilyInfoResponse(fi.getSn())).collect(Collectors.toList());
+        return familyRepository.findMyFamilyInfo(sn)
+                .stream()
+                .map(fi -> new FamilyInfoResponse(fi.getSn()))
+                .collect(Collectors.toList());
     }
 }
