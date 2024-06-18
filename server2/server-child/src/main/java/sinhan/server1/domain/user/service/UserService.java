@@ -56,11 +56,11 @@ public class UserService {
     }
 
     @Transactional
-    public FamilyFindOneResponse connectFamily(FamilySaveRequest familySaveRequest) {
-        Child child = childRepository.findBySerialNum(familySaveRequest.getUserSn())
+    public FamilyFindOneResponse connectFamily(long sn, String phoneNum) {
+        Child child = childRepository.findBySerialNum(sn)
                 .orElseThrow(() -> new NoSuchElementException("사용자가 존재하지 않습니다."));
 
-        Parents parents = parentsRepository.findByPhoneNum(familySaveRequest.getPhoneNum())
+        Parents parents = parentsRepository.findByPhoneNum(phoneNum)
                 .orElseThrow(() -> new NoSuchElementException("부모 사용자가 존재하지 않습니다."));
 
         return familyRepository.save(new Family(child, parents)).convertToFamilyFindOneResponse();

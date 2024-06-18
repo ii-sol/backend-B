@@ -63,11 +63,10 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public ApiUtils.ApiResult connectFamily(@RequestBody FamilySaveRequest familySaveRequest) throws Exception {
+    public ApiUtils.ApiResult connectFamily(@RequestBody String phoneNum) throws Exception {
         UserInfoResponse userInfo = jwtService.getUserInfo(jwtService.getAccessToken());
-        familySaveRequest.setUserSn(userInfo.getSn());
 
-        FamilyFindOneResponse family = userService.connectFamily(familySaveRequest);
+        FamilyFindOneResponse family = userService.connectFamily(userInfo.getSn(), phoneNum);
 
         return family != null
                 ? success("가족 관계가 생성되었습니다.")
