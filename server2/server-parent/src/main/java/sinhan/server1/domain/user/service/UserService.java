@@ -6,10 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import sinhan.server1.domain.user.dto.JoinInfoSaveRequest;
-import sinhan.server1.domain.user.dto.LoginInfoFindRequest;
-import sinhan.server1.domain.user.dto.ParentsFindOneResponse;
-import sinhan.server1.domain.user.dto.ParentsUpdateRequest;
+import sinhan.server1.domain.user.dto.*;
 import sinhan.server1.domain.user.entity.Family;
 import sinhan.server1.domain.user.entity.Parents;
 import sinhan.server1.domain.user.repository.FamilyRepository;
@@ -82,6 +79,11 @@ public class UserService {
         Parents parents = parentsRepository.save(joinInfoSaveRequest.convertToUser(serialNum, passwordEncoder));
 
         return parents.convertToUserFindOneResponse();
+    }
+
+    @Transactional
+    public boolean checkPhone(PhoneFindRequest phoneFindRequest) {
+        return parentsRepository.findByPhoneNum(phoneFindRequest.getPhoneNum()).isEmpty();
     }
 
     @Transactional

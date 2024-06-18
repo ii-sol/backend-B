@@ -8,10 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import sinhan.server1.domain.user.dto.JoinInfoSaveRequest;
-import sinhan.server1.domain.user.dto.LoginInfoFindRequest;
-import sinhan.server1.domain.user.dto.ParentsFindOneResponse;
-import sinhan.server1.domain.user.dto.ParentsUpdateRequest;
+import sinhan.server1.domain.user.dto.*;
 import sinhan.server1.domain.user.service.UserService;
 import sinhan.server1.global.security.JwtService;
 import sinhan.server1.global.security.dto.FamilyInfoResponse;
@@ -114,6 +111,16 @@ public class UserController {
         } else {
             response.setStatus(HttpStatus.BAD_REQUEST.value());
             return error("가입에 실패하였습니다.", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/auth/useful-phone")
+    public ApiUtils.ApiResult checkPhone(@Valid @RequestBody PhoneFindRequest phoneFindRequest, HttpServletResponse response) {
+        if (userService.checkPhone(phoneFindRequest)) {
+            return success(true);
+        } else {
+            response.setStatus(HttpStatus.CONFLICT.value());
+            return error(false, HttpStatus.CONFLICT);
         }
     }
 
