@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 
 @SpringBootApplication(scanBasePackages = {"sinhan.server2"})
 @EnableJpaRepositories(basePackages = {"sinhan.server2.domain"})
-@EnableMongoRepositories(basePackages = {"sinhan.server2.global.notification.mongo"})
+@EnableMongoRepositories(basePackages = {"sinhan.server2.notification.mongo"})
 
 public class Server1Application {
 

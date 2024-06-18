@@ -1,18 +1,17 @@
-package sinhan.server2.global.notification.service;
+package sinhan.server2.notification.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-import sinhan.server2.global.notification.dto.NotificationFindAllResponse;
-import sinhan.server2.global.notification.entity.Notification;
+import sinhan.server2.notification.dto.NotificationFindAllResponse;
+import sinhan.server2.notification.entity.Notification;
 import sinhan.server2.domain.tempuser.TempUser;
 import sinhan.server2.domain.tempuser.TempUserRepository;
 import sinhan.server2.global.exception.CustomException;
 import sinhan.server2.global.exception.ErrorCode;
-import sinhan.server2.global.notification.mongo.NotificationRepository;
-import sinhan.server2.global.notification.utils.MessageHandler;
+import sinhan.server2.notification.utils.MessageHandler;
 
 import java.io.IOException;
 import java.time.ZoneId;
@@ -28,7 +27,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SSEService {
     private final Map<Long, SseEmitter> sseEmitters = new ConcurrentHashMap<>();
     private final TempUserRepository tempUserRepository;
-    private final NotificationRepository NotificationRepository;
+    private final sinhan.server2.notification.mongo.NotificationRepository NotificationRepository;
 
     //SSE에 등록
     public SseEmitter subscribe(Long serialNumber) {
