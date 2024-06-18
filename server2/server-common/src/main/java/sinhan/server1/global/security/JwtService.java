@@ -71,6 +71,22 @@ public class JwtService {
         return getUserInfoFromClaims(claims);
     }
 
+    public UserInfoResponse getUserInfo() throws AuthException, ExpiredJwtException {
+        String token = getAccessToken();
+        if (token == null || token.isEmpty()) {
+            throw new AuthException("EMPTY_JWT");
+        }
+
+        // 2. JWT parsing
+        Jws<Claims> claims = Jwts.parser()
+                .verifyWith(Secret.getJwtKey())
+                .build()
+                .parseSignedClaims(token);
+
+        // 3. userInfo 추출
+        return getUserInfoFromClaims(claims);
+    }
+
     private UserInfoResponse getUserInfoFromClaims(Jws<Claims> claims) throws AuthException {
         String jwtType = claims.getHeader().getType();
         if (jwtType == null || (!jwtType.equals(TOKEN_TYPE))) {
