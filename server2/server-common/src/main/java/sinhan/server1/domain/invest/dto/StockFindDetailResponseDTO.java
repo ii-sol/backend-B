@@ -12,7 +12,6 @@ import sinhan.server1.domain.invest.entity.StockCartDate;
 @Getter
 @Setter
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
 @Data
 public class StockFindDetailResponseDTO {
@@ -28,4 +27,19 @@ public class StockFindDetailResponseDTO {
     public String changeSign;
     public String changeRate;
     public List<StockCartDate> charts;
+
+    public StockFindDetailResponseDTO() {
+        this.PSR = "1";
+    }
+
+    public void calSPS(int temp){
+        try{
+            Integer sps = Integer.valueOf(temp);
+            Integer tempPSR = Integer.valueOf(PSR);
+            this.PSR = sps*tempPSR+"";
+        }catch (NumberFormatException ex){
+            System.out.println(ex);
+        }
+    }
+
 }
