@@ -3,15 +3,15 @@ package sinhan.server1.domain.user.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
-import sinhan.server1.domain.user.entity.User;
+import sinhan.server1.domain.user.entity.Parents;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<User, Integer> {
+public interface ParentsRepository extends JpaRepository<Parents, Integer> {
 
-    Optional<User> findBySerialNum(long userSn);
-    Optional<User> findByPhoneNum(String phoneNum);
+    Optional<Parents> findBySerialNum(long userSn);
+    Optional<Parents> findByPhoneNum(String phoneNum);
 
     @Query("SELECT u.phoneNum FROM User u")
     List<String> findAllPhones();

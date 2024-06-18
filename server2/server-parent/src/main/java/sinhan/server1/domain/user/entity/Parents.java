@@ -2,7 +2,7 @@ package sinhan.server1.domain.user.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import sinhan.server1.domain.user.dto.UserFindOneResponse;
+import sinhan.server1.domain.user.dto.ParentsFindOneResponse;
 
 import java.sql.Date;
 
@@ -13,7 +13,7 @@ import java.sql.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name="PARENTS")
-public class User {
+public class Parents {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +31,7 @@ public class User {
     @Column(name = "profile_id", nullable = false, columnDefinition = "TINYINT UNSIGNED DEFAULT 1")
     private int profileId = 1;
 
-    public User(long serialNum, String phoneNum, String name, Date birthDate, String accountInfo, int profileId) {
+    public Parents(long serialNum, String phoneNum, String name, Date birthDate, String accountInfo, int profileId) {
         this.serialNum = serialNum;
         this.phoneNum = phoneNum;
         this.name = name;
@@ -40,7 +40,7 @@ public class User {
         this.profileId = profileId;
     }
 
-    public UserFindOneResponse convertToUserFindOneResponse() {
-        return new UserFindOneResponse(id, serialNum, phoneNum, name, birthDate, profileId);
+    public ParentsFindOneResponse convertToUserFindOneResponse() {
+        return new ParentsFindOneResponse(id, serialNum, phoneNum, name, birthDate, profileId);
     }
 }

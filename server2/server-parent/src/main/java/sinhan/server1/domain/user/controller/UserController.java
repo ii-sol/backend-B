@@ -10,8 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import sinhan.server1.domain.user.dto.JoinInfoSaveRequest;
 import sinhan.server1.domain.user.dto.LoginInfoFindRequest;
-import sinhan.server1.domain.user.dto.UserFindOneResponse;
-import sinhan.server1.domain.user.dto.UserUpdateRequest;
+import sinhan.server1.domain.user.dto.ParentsFindOneResponse;
+import sinhan.server1.domain.user.dto.ParentsUpdateRequest;
 import sinhan.server1.domain.user.service.UserService;
 import sinhan.server1.global.security.JwtService;
 import sinhan.server1.global.security.dto.FamilyInfoResponse;
@@ -51,16 +51,16 @@ public class UserController {
             }
         }
 
-        UserFindOneResponse user = userService.getUser(sn);
+        ParentsFindOneResponse user = userService.getUser(sn);
         return user.getSerialNumber() == sn ? success(user) : error("잘못된 사용자 요청입니다.", HttpStatus.BAD_REQUEST);
     }
 
     @PutMapping("/users")
-    public ApiUtils.ApiResult updateUser(@RequestBody UserUpdateRequest userUpdateRequest) throws Exception {
+    public ApiUtils.ApiResult updateUser(@RequestBody ParentsUpdateRequest parentsUpdateRequest) throws Exception {
         UserInfoResponse userInfo = jwtService.getUserInfo(jwtService.getAccessToken());
-        userUpdateRequest.setSerialNum(userInfo.getSn());
+        parentsUpdateRequest.setSerialNum(userInfo.getSn());
 
-        UserFindOneResponse user = userService.updateUser(userUpdateRequest);
+        ParentsFindOneResponse user = userService.updateUser(parentsUpdateRequest);
         return user != null ? success(user) : error("잘못된 사용자 요청입니다.", HttpStatus.BAD_REQUEST);
     }
 
@@ -107,7 +107,7 @@ public class UserController {
 
     @PostMapping("/auth/join")
     public ApiUtils.ApiResult join(@Valid @RequestBody JoinInfoSaveRequest joinInfoSaveRequest, HttpServletResponse response) {
-        UserFindOneResponse user = userService.join(joinInfoSaveRequest);
+        ParentsFindOneResponse user = userService.join(joinInfoSaveRequest);
 
         if (user != null) {
             return success("가입되었습니다.");
@@ -120,7 +120,7 @@ public class UserController {
     @PostMapping("/auth/login")
     public ApiUtils.ApiResult login(@Valid @RequestBody LoginInfoFindRequest loginInfoFindRequest, HttpServletResponse response) throws AuthException, JsonProcessingException {
         try {
-            UserFindOneResponse user = userService.login(loginInfoFindRequest);
+            ParentsFindOneResponse user = userService.login(loginInfoFindRequest);
             List<FamilyInfoResponse> myFamilyInfo = userService.getFamilyInfo(user.getSerialNumber());
             setFamilyName(myFamilyInfo);
 

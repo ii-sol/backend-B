@@ -8,12 +8,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import sinhan.server1.domain.user.dto.JoinInfoSaveRequest;
 import sinhan.server1.domain.user.dto.LoginInfoFindRequest;
-import sinhan.server1.domain.user.dto.UserFindOneResponse;
-import sinhan.server1.domain.user.dto.UserUpdateRequest;
+import sinhan.server1.domain.user.dto.ParentsFindOneResponse;
+import sinhan.server1.domain.user.dto.ParentsUpdateRequest;
 import sinhan.server1.domain.user.entity.Family;
-import sinhan.server1.domain.user.entity.User;
+import sinhan.server1.domain.user.entity.Parents;
 import sinhan.server1.domain.user.repository.FamilyRepository;
-import sinhan.server1.domain.user.repository.UserRepository;
+import sinhan.server1.domain.user.repository.ParentsRepository;
 import sinhan.server1.global.security.dto.FamilyInfoResponse;
 import sinhan.server1.global.utils.exception.AuthException;
 
@@ -28,40 +28,40 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final PasswordEncoder passwordEncoder;
-    private UserRepository userRepository;
+    private ParentsRepository parentsRepository;
     private FamilyRepository familyRepository;
 
     @Transactional
-    public UserFindOneResponse getUser(long sn) {
-        User user = userRepository.findBySerialNum(sn)
+    public ParentsFindOneResponse getUser(long sn) {
+        Parents parents = parentsRepository.findBySerialNum(sn)
                 .orElseThrow(() -> new NoSuchElementException("사용자가 존재하지 않습니다."));
 
-        return user.convertToUserFindOneResponse();
+        return parents.convertToUserFindOneResponse();
     }
 
     @Transactional
-    public UserFindOneResponse updateUser(UserUpdateRequest userUpdateRequest) {
-        User user = userRepository.findBySerialNum(userUpdateRequest.getSerialNum())
+    public ParentsFindOneResponse updateUser(ParentsUpdateRequest parentsUpdateRequest) {
+        Parents parents = parentsRepository.findBySerialNum(parentsUpdateRequest.getSerialNum())
                 .orElseThrow(() -> new NoSuchElementException("사용자가 존재하지 않습니다."));
 
 
-        user.setPhoneNum(userUpdateRequest.getPhoneNum());
-        user.setName(userUpdateRequest.getName());
-        user.setBirthDate(userUpdateRequest.getBirthdate());
-        user.setProfileId(userUpdateRequest.getProfileId());
+        parents.setPhoneNum(parentsUpdateRequest.getPhoneNum());
+        parents.setName(parentsUpdateRequest.getName());
+        parents.setBirthDate(parentsUpdateRequest.getBirthdate());
+        parents.setProfileId(parentsUpdateRequest.getProfileId());
 
-        User updatedUser = userRepository.save(user);
+        Parents updatedParents = parentsRepository.save(parents);
 
-        return updatedUser.convertToUserFindOneResponse();
+        return updatedParents.convertToUserFindOneResponse();
     }
 
     @Transactional
     public boolean disconnectFamily(long sn, long familySn) {
-        User user = userRepository.findBySerialNum(sn)
+        Parents parents = parentsRepository.findBySerialNum(sn)
                 .orElseThrow(() -> new NoSuchElementException("사용자가 존재하지 않습니다."));
 
         Family family = familyRepository
-                .findByUserSerialNumAndFamilySn(user, familySn)
+                .findByUserSerialNumAndFamilySn(parents, familySn)
                 .orElseThrow(() -> new NoSuchElementException("가족 관계가 존재하지 않습니다."));
 
         familyRepository.delete(family.getId());
@@ -72,27 +72,27 @@ public class UserService {
 
     @Transactional
     public List<String> getPhones() {
-        return userRepository.findAllPhones();
+        return parentsRepository.findAllPhones();
     }
 
     @Transactional
-    public UserFindOneResponse join(JoinInfoSaveRequest joinInfoSaveRequest) {
-        long serialNum = userRepository.generateSerialNum();
+    public ParentsFindOneResponse join(JoinInfoSaveRequest joinInfoSaveRequest) {
+        long serialNum = parentsRepository.generateSerialNum();
         log.info("Generated serial number={}", serialNum);
-        User user = userRepository.save(joinInfoSaveRequest.convertToUser(serialNum, passwordEncoder));
+        Parents parents = parentsRepository.save(joinInfoSaveRequest.convertToUser(serialNum, passwordEncoder));
 
-        return user.convertToUserFindOneResponse();
+        return parents.convertToUserFindOneResponse();
     }
 
     @Transactional
-    public UserFindOneResponse login(@Valid LoginInfoFindRequest loginInfoFindRequest) throws AuthException {
-        User user = userRepository.findByPhoneNum(loginInfoFindRequest.getPhoneNum()).orElseThrow(() -> new AuthException("INVALID_CREDENTIALS"));
+    public ParentsFindOneResponse login(@Valid LoginInfoFindRequest loginInfoFindRequest) throws AuthException {
+        Parents parents = parentsRepository.findByPhoneNum(loginInfoFindRequest.getPhoneNum()).orElseThrow(() -> new AuthException("INVALID_CREDENTIALS"));
 
-        if (!passwordEncoder.matches(loginInfoFindRequest.getAccountInfo(), user.getAccountInfo())) {
+        if (!passwordEncoder.matches(loginInfoFindRequest.getAccountInfo(), parents.getAccountInfo())) {
             throw new AuthException("INVALID_CREDENTIALS");
         }
 
-        return user.convertToUserFindOneResponse();
+        return parents.convertToUserFindOneResponse();
     }
 
     @Transactional()
