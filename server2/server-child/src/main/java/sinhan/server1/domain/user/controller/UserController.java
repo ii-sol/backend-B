@@ -116,7 +116,6 @@ public class UserController {
         try {
             ChildFindOneResponse user = userService.login(loginInfoFindRequest);
             List<FamilyInfoResponse> myFamilyInfo = userService.getFamilyInfo(user.getSerialNumber());
-            setFamilyName(myFamilyInfo);
 
             myFamilyInfo.forEach(info -> log.info("Family Info - SN: {}, Name: {}", info.getSn(), info.getName()));
 
@@ -146,7 +145,6 @@ public class UserController {
         try {
             long sn = jwtService.getUserInfo(refreshToken).getSn();
             List<FamilyInfoResponse> myFamilyInfo = userService.getFamilyInfo(sn);
-            setFamilyName(myFamilyInfo);
 
             String newAccessToken = jwtService.createAccessToken(sn, myFamilyInfo);
             jwtService.sendAccessToken(response, newAccessToken);
