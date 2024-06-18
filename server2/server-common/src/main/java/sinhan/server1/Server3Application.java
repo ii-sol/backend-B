@@ -4,7 +4,7 @@ package sinhan.server1;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication(scanBasePackages = {"server-child", "server-parent"})
+@SpringBootApplication
 public class Server3Application {
 
     public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package sinhan.server1.domain.utils;
+package sinhan.server1.global.utils;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
