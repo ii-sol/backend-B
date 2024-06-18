@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import sinhan.server1.domain.user.entity.Child;
 import sinhan.server1.domain.user.entity.Family;
 import sinhan.server1.domain.user.entity.Parents;
 import sinhan.server1.global.security.dto.FamilyInfoResponse;
@@ -25,5 +26,5 @@ public interface FamilyRepository extends JpaRepository<Family, Integer> {
             "ORDER BY sn")
     List<FamilyInfoResponse> findMyFamilyInfo(@Param("sn") long sn);
 
-    Optional<Family> findByUserSerialNumAndFamilySn(Parents parents, long familySn);
+    Optional<Family> findByChildSerialNumAndFamilySerialNum(Child child, Parents parents);
 }

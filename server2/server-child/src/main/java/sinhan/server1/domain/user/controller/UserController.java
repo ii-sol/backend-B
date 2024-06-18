@@ -18,7 +18,6 @@ import sinhan.server1.global.utils.ApiUtils;
 import sinhan.server1.global.utils.exception.AuthException;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Set;
 
 import static sinhan.server1.global.utils.ApiUtils.error;
@@ -77,19 +76,9 @@ public class UserController {
     public ApiUtils.ApiResult disconnectFamily(@PathVariable long familySn) throws Exception {
         UserInfoResponse userInfo = jwtService.getUserInfo(jwtService.getAccessToken());
 
-        if (!isFamilyUser(familySn)) {
-            throw new NoSuchElementException("부모 사용자가 존재하지 않습니다.");
-        }
-
-        if (isDisconnected(familySn)) {
-            boolean isDisconnected = userService.disconnectFamily(userInfo.getSn(), familySn);
-
-            if (isDisconnected) {
-                return success("가족 관계가 삭제되었습니다.");
-            }
-        }
-
-        return error("가족 관계가 삭제되지 않았습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+        return userService.disconnectFamily(userInfo.getSn(), familySn)
+                ? success("가족 관계가 삭제되었습니다.")
+                : error("가족 관계가 삭제되지 않았습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     private boolean isFamilyUser(long familySn) {
@@ -98,11 +87,6 @@ public class UserController {
     }
 
     private boolean isConnected(long familySn) {
-        // TODO: 부모 서버 가족 관계 생성 이벤트 등록 - 콜백
-        return true;
-    }
-
-    private boolean isDisconnected(long familySn) {
         // TODO: 부모 서버 가족 관계 생성 이벤트 등록 - 콜백
         return true;
     }

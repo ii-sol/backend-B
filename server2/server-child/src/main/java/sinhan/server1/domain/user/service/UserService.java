@@ -71,14 +71,16 @@ public class UserService {
         Child child = childRepository.findBySerialNum(sn)
                 .orElseThrow(() -> new NoSuchElementException("사용자가 존재하지 않습니다."));
 
+        Parents parents = parentsRepository.findBySerialNum(familySn)
+                .orElseThrow(() -> new NoSuchElementException("부모 사용자가 존재하지 않습니다."));
+
         Family family = familyRepository
-                .findByUserSerialNumAndFamilySn(child, familySn)
+                .findByChildSerialNumAndFamilySerialNum(child, parents)
                 .orElseThrow(() -> new NoSuchElementException("가족 관계가 존재하지 않습니다."));
 
         familyRepository.delete(family.getId());
 
-        Optional<Family> checkFamily = familyRepository.findById(family.getId());
-        return checkFamily.isEmpty();
+        return familyRepository.findById(family.getId()).isEmpty();
     }
 
     @Transactional
