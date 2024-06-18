@@ -122,7 +122,6 @@ public class UserController {
         try {
             ParentsFindOneResponse user = userService.login(loginInfoFindRequest);
             List<FamilyInfoResponse> myFamilyInfo = userService.getFamilyInfo(user.getSerialNumber());
-            setFamilyName(myFamilyInfo);
 
             myFamilyInfo.forEach(info -> log.info("Family Info - SN: {}, Name: {}", info.getSn(), info.getName()));
 
@@ -134,10 +133,6 @@ public class UserController {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return error("로그인에 실패하였습니다. " + e.getMessage(), HttpStatus.UNAUTHORIZED);
         }
-    }
-
-    private void setFamilyName(List<FamilyInfoResponse> myFamilyInfo) {
-        // TODO: 아이 이름 가져오기 이벤트 등록 - 콜백
     }
 
     @PostMapping("/auth/logout")
@@ -156,7 +151,6 @@ public class UserController {
         try {
             long sn = jwtService.getUserInfo(refreshToken).getSn();
             List<FamilyInfoResponse> myFamilyInfo = userService.getFamilyInfo(sn);
-            setFamilyName(myFamilyInfo);
 
             String newAccessToken = jwtService.createAccessToken(sn, myFamilyInfo);
             jwtService.sendAccessToken(response, newAccessToken);
