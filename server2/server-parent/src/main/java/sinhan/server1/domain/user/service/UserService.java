@@ -97,6 +97,9 @@ public class UserService {
 
     @Transactional()
     public List<FamilyInfoResponse> getFamilyInfo(long sn) {
-        return familyRepository.findMyFamilyInfo(sn).stream().map(fi -> new FamilyInfoResponse(fi.getSn())).collect(Collectors.toList());
+        return familyRepository.findMyFamilyInfo(sn)
+                .stream()
+                .map(fi -> new FamilyInfoResponse(fi.getSn(), fi.getName()))
+                .collect(Collectors.toList());
     }
 }

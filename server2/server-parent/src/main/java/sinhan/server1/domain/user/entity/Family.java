@@ -21,13 +21,16 @@ public class Family {
     private Child child;
     @JoinColumn(name = "parents_sn", referencedColumnName = "serial_num", nullable = false, columnDefinition = "BIGINT UNSIGNED")
     private Parents parents;
+    @Column(name = "parents_alias", length = 15)
+    private String parentsAlias;
 
-    public Family(Child child, Parents parents) {
+    public Family(Child child, Parents parents, String parentsAlias) {
         this.child = child;
         this.parents = parents;
+        this.parentsAlias = parentsAlias;
     }
 
     public FamilyFindOneResponse convertToFamilyFindOneResponse() {
-        return new FamilyFindOneResponse(id, child.getSerialNum(), parents.getSerialNum());
+        return new FamilyFindOneResponse(id, child.getSerialNum(), parents.getSerialNum(), parentsAlias);
     }
 }

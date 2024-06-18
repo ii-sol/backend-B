@@ -13,4 +13,6 @@ public class FamilyFindOneResponse {
     private long userSn;
     @JsonProperty(value = "family_sn")
     private long familySn;
+    @JsonProperty(value = "parents_alias")
+    private String familyAlias;
 }

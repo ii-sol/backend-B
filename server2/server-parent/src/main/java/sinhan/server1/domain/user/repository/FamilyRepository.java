@@ -19,7 +19,7 @@ public interface FamilyRepository extends JpaRepository<Family, Integer> {
     @Query("DELETE FROM Family f WHERE f.id = :id")
     void delete(@Param("id") int id);
 
-    @Query("SELECT f.familySn AS sn " +
+    @Query("SELECT f.family AS sn, f.family.name AS name " +
             "FROM Family f " +
             "WHERE f.user.serialNum = :sn " +
             "ORDER BY sn")
