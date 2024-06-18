@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
-import sinhan.server1.domain.user.entity.User;
+import sinhan.server1.domain.user.entity.Child;
 
 import java.sql.Date;
 
@@ -15,7 +15,7 @@ import java.sql.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Component
-public class UserFindOneResponse {
+public class ChildFindOneResponse {
 
     private int id;
     @JsonProperty(value = "serial_number")
@@ -29,15 +29,15 @@ public class UserFindOneResponse {
     private int profileId;
     private int score;
 
-    public static UserFindOneResponse from(User user) {
-        return UserFindOneResponse.builder()
-                .id(user.getId())
-                .serialNumber(user.getSerialNum())
-                .phoneNum(user.getPhoneNum())
-                .name(user.getName())
-                .birthDate(user.getBirthDate())
-                .profileId(user.getProfileId())
-                .score(user.getScore())
+    public static ChildFindOneResponse from(Child child) {
+        return ChildFindOneResponse.builder()
+                .id(child.getId())
+                .serialNumber(child.getSerialNum())
+                .phoneNum(child.getPhoneNum())
+                .name(child.getName())
+                .birthDate(child.getBirthDate())
+                .profileId(child.getProfileId())
+                .score(child.getScore())
                 .build();
     }
 

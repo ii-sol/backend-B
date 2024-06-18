@@ -3,7 +3,7 @@ package sinhan.server1.domain.user.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Check;
-import sinhan.server1.domain.user.dto.UserFindOneResponse;
+import sinhan.server1.domain.user.dto.ChildFindOneResponse;
 
 import java.sql.Date;
 
@@ -13,9 +13,8 @@ import java.sql.Date;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="CHILD")
 @Check(constraints = "score >= 0 AND score <= 100")
-public class User {
+public class Child {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +34,7 @@ public class User {
     @Column(nullable = false, columnDefinition = "TINYINT UNSIGNED DEFAULT 50")
     private int score = 50;
 
-    public User(long serialNum, String phoneNum, String name, Date birthDate, String accountInfo, int profileId) {
+    public Child(long serialNum, String phoneNum, String name, Date birthDate, String accountInfo, int profileId) {
         this.serialNum = serialNum;
         this.phoneNum = phoneNum;
         this.name = name;
@@ -54,7 +53,7 @@ public class User {
         }
     }
 
-    public UserFindOneResponse convertToUserFindOneResponse() {
-        return new UserFindOneResponse(id, serialNum, phoneNum, name, birthDate, profileId, score);
+    public ChildFindOneResponse convertToUserFindOneResponse() {
+        return new ChildFindOneResponse(id, serialNum, phoneNum, name, birthDate, profileId, score);
     }
 }

@@ -1,10 +1,14 @@
 package sinhan.server1.domain.user.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import sinhan.server1.domain.user.entity.User;
+import sinhan.server1.domain.user.entity.Child;
 
 import java.sql.Date;
 
@@ -29,8 +33,8 @@ public class JoinInfoSaveRequest {
     @JsonProperty(value = "profile_id")
     private Integer profileId;
 
-    public User convertToUser(long serialNum, PasswordEncoder passwordEncoder) {
+    public Child convertToUser(long serialNum, PasswordEncoder passwordEncoder) {
         String encodedPassword = passwordEncoder.encode(accountInfo);
-        return new User(serialNum, phoneNum, name, birthDate, encodedPassword, profileId);
+        return new Child(serialNum, phoneNum, name, birthDate, encodedPassword, profileId);
     }
 }

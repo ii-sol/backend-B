@@ -9,7 +9,7 @@ import java.sql.Date;
 @RequiredArgsConstructor
 @Getter
 @Setter
-public class UserUpdateRequest {
+public class ChildUpdateRequest {
 
     private long serialNum;
     private final String phoneNum;
