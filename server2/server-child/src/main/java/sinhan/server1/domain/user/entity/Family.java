@@ -17,17 +17,17 @@ public class Family {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_sn", referencedColumnName = "serial_num", nullable = false, columnDefinition = "BIGINT UNSIGNED")
+    @JoinColumn(name = "child_sn", referencedColumnName = "serial_num", nullable = false, columnDefinition = "BIGINT UNSIGNED")
     private Child child;
-    @Column(name = "family_sn", nullable = false, columnDefinition = "BIGINT UNSIGNED")
-    private long familySn;
+    @JoinColumn(name = "parents_sn", referencedColumnName = "serial_num", nullable = false, columnDefinition = "BIGINT UNSIGNED")
+    private Parents parents;
 
-    public Family(Child child, long familySn) {
+    public Family(Child child, Parents parents) {
         this.child = child;
-        this.familySn = familySn;
+        this.parents = parents;
     }
 
     public FamilyFindOneResponse convertToFamilyFindOneResponse() {
-        return new FamilyFindOneResponse(id, child.getSerialNum(), familySn);
+        return new FamilyFindOneResponse(id, child.getSerialNum(), parents.getSerialNum());
     }
 }

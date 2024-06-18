@@ -4,11 +4,16 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-@RequiredArgsConstructor
-@Setter
-@Getter
-public class FamilySaveRequest {
+import java.sql.Date;
 
-    private long userSn;
+@RequiredArgsConstructor
+@Getter
+@Setter
+public class ParentsUpdateRequest {
+
+    private long serialNum;
     private final String phoneNum;
+    private final String name;
+    private final Date birthdate;
+    private final int profileId;
 }
