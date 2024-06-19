@@ -45,7 +45,7 @@ public class ChildService {
 
         child.setPhoneNum(childUpdateRequest.getPhoneNum());
         child.setName(childUpdateRequest.getName());
-        child.setBirthDate(childUpdateRequest.getBirthdate());
+        child.setBirthDate(childUpdateRequest.getBirthDate());
         child.setProfileId(childUpdateRequest.getProfileId());
 
         Child updatedChild = childRepository.save(child);
@@ -60,7 +60,7 @@ public class ChildService {
     private static boolean isUpdated(ChildUpdateRequest childUpdateRequest, Child updatedChild) {
         return updatedChild.getPhoneNum().equals(childUpdateRequest.getPhoneNum())
                 && updatedChild.getName().equals(childUpdateRequest.getName())
-                && updatedChild.getBirthDate().equals(childUpdateRequest.getBirthdate())
+                && updatedChild.getBirthDate().equals(childUpdateRequest.getBirthDate())
                 && updatedChild.getProfileId() == childUpdateRequest.getProfileId();
     }
 
