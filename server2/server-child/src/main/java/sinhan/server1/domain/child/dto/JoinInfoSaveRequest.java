@@ -22,6 +22,7 @@ public class JoinInfoSaveRequest {
     @Pattern(regexp = "\\d{3}-\\d{4}-\\d{4}", message = "전화번호 형식이 올바르지 않습니다.")
     private String phoneNum;
     @NotBlank(message = "이름을 입력해주세요.")
+    @Pattern(regexp = "^[가-힣]{2,5}$", message = "이름은 한글로 최소 2글자 최대 5글자까지 입력 가능합니다.")
     private String name;
     @NotNull(message = "생일을 입력해주세요.")
     @Past(message = "생일은 현재 날짜보다 이전이어야 합니다.")
