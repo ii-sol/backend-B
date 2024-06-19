@@ -66,14 +66,16 @@ public class ParentsController {
     }
 
     @DeleteMapping("/users/{family-sn}")
-    public ApiUtils.ApiResult disconnectFamily(@PathVariable long familySn, HttpServletResponse response) throws Exception {
+    public ApiUtils.ApiResult disconnectFamily(@PathVariable("family-sn") long familySn, HttpServletResponse response) throws Exception {
         UserInfoResponse userInfo = jwtService.getUserInfo();
 
-        if (parentsService.disconnectFamily(userInfo.getSn(), familySn)) {
+        int deletedId = parentsService.disconnectFamily(userInfo.getSn(), familySn);
+
+        if (parentsService.isFamily(deletedId)) {
             return success("가족 관계가 삭제되었습니다.");
         } else {
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-            return error("가족 관계 삭제가 실패하였습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+            return error("가족 관계 삭제에 실패하였습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

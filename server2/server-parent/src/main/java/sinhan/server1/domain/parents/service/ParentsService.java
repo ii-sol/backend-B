@@ -65,7 +65,7 @@ public class ParentsService {
     }
 
     @Transactional
-    public boolean disconnectFamily(long sn, long familySn) {
+    public int disconnectFamily(long sn, long familySn) {
         Parents parents = parentsRepository.findBySerialNum(sn)
                 .orElseThrow(() -> new NoSuchElementException("사용자가 존재하지 않습니다."));
 
@@ -73,12 +73,17 @@ public class ParentsService {
                 .orElseThrow(() -> new NoSuchElementException("아이 사용자가 존재하지 않습니다."));
 
         Family family = familyRepository
-                .findByChildSerialNumAndParentsSerialNum(child, parents)
+                .findByChildAndParents(child, parents)
                 .orElseThrow(() -> new NoSuchElementException("가족 관계가 존재하지 않습니다."));
 
         familyRepository.delete(family.getId());
 
-        return familyRepository.findById(family.getId()).isEmpty();
+        return family.getId();
+    }
+
+    @Transactional
+    public boolean isFamily(int deletedId) {
+        return familyRepository.findById(deletedId).isPresent();
     }
 
     @Transactional
