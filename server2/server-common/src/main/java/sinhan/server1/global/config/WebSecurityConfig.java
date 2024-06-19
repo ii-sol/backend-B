@@ -1,5 +1,6 @@
 package sinhan.server1.global.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +20,7 @@ import sinhan.server1.global.security.JwtService;
 public class WebSecurityConfig {
 
     public JwtService jwtService;
+    private final ObjectMapper objectMapper;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -38,7 +40,7 @@ public class WebSecurityConfig {
                 );
 
         http.addFilterBefore(
-                new JwtAuthenticationFilter(jwtService),
+                new JwtAuthenticationFilter(jwtService, objectMapper),
                 UsernamePasswordAuthenticationFilter.class
         );
 
