@@ -51,7 +51,7 @@ public class ParentsController {
     }
 
     @PutMapping("/users")
-    public ApiUtils.ApiResult updateUser(@RequestBody ParentsUpdateRequest parentsUpdateRequest, HttpServletResponse response) throws Exception {
+    public ApiUtils.ApiResult updateUser(@Valid@ RequestBody ParentsUpdateRequest parentsUpdateRequest, HttpServletResponse response) throws Exception {
         UserInfoResponse userInfo = jwtService.getUserInfo();
         parentsUpdateRequest.setSerialNum(userInfo.getSn());
 

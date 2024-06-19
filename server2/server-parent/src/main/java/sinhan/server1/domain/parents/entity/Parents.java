@@ -40,6 +40,6 @@ public class Parents {
     }
 
     public ParentsFindOneResponse convertToUserFindOneResponse() {
-        return new ParentsFindOneResponse(id, serialNum, phoneNum, name, birthDate, profileId);
+        return new ParentsFindOneResponse(serialNum, phoneNum, name, birthDate, profileId);
     }
 }

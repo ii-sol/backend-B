@@ -54,6 +54,6 @@ public class Child {
     }
 
     public ChildFindOneResponse convertToUserFindOneResponse() {
-        return new ChildFindOneResponse(id, serialNum, phoneNum, name, birthDate, profileId, score);
+        return new ChildFindOneResponse(serialNum, phoneNum, name, birthDate, profileId, score);
     }
 }

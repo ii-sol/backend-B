@@ -1,6 +1,5 @@
 package sinhan.server1.domain.parents.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,22 +16,16 @@ import java.sql.Date;
 @Component
 public class ChildFindOneResponse {
 
-    private int id;
-    @JsonProperty(value = "serial_number")
-    private long serialNumber;
-    @JsonProperty(value = "phone_num")
+    private long serialNum;
     private String phoneNum;
     private String name;
-    @JsonProperty(value = "birth_date")
     private Date birthDate;
-    @JsonProperty(value = "profile_id")
     private int profileId;
     private int score;
 
     public static ChildFindOneResponse from(Child child) {
         return ChildFindOneResponse.builder()
-                .id(child.getId())
-                .serialNumber(child.getSerialNum())
+                .serialNum(child.getSerialNum())
                 .phoneNum(child.getPhoneNum())
                 .name(child.getName())
                 .birthDate(child.getBirthDate())
@@ -40,5 +33,4 @@ public class ChildFindOneResponse {
                 .score(child.getScore())
                 .build();
     }
-
 }

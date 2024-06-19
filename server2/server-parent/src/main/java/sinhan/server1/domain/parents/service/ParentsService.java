@@ -45,7 +45,7 @@ public class ParentsService {
 
         parents.setPhoneNum(parentsUpdateRequest.getPhoneNum());
         parents.setName(parentsUpdateRequest.getName());
-        parents.setBirthDate(parentsUpdateRequest.getBirthdate());
+        parents.setBirthDate(parentsUpdateRequest.getBirthDate());
         parents.setProfileId(parentsUpdateRequest.getProfileId());
 
         Parents updatedParents = parentsRepository.save(parents);
@@ -60,7 +60,7 @@ public class ParentsService {
     private static boolean isUpdated(ParentsUpdateRequest parentsUpdateRequest, Parents updatedParents) {
         return updatedParents.getPhoneNum().equals(parentsUpdateRequest.getPhoneNum())
                 && updatedParents.getName().equals(parentsUpdateRequest.getName())
-                && updatedParents.getBirthDate().equals(parentsUpdateRequest.getBirthdate())
+                && updatedParents.getBirthDate().equals(parentsUpdateRequest.getBirthDate())
                 && updatedParents.getProfileId() == parentsUpdateRequest.getProfileId();
     }
 
