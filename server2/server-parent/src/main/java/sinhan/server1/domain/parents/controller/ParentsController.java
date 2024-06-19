@@ -79,16 +79,6 @@ public class ParentsController {
         }
     }
 
-    private boolean isFamilyUser(long familySn) {
-        // TODO: 아이 사용자 확인 이벤트 등록 - 콜백
-        return true;
-    }
-
-    private boolean isDisconnected(long familySn) {
-        // TODO: 아이 서버 가족 관계 생성 이벤트 등록 - 콜백
-        return true;
-    }
-
     @GetMapping("/users/phones")
     public ApiUtils.ApiResult getPhones() {
         List<String> phones = parentsService.getPhones();
