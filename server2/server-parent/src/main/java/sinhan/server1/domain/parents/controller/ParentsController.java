@@ -62,8 +62,8 @@ public class ParentsController {
         if (user != null) {
             return success(user);
         } else {
-            response.setStatus(HttpStatus.BAD_REQUEST.value());
-            return error("잘못된 사용자 요청입니다.", HttpStatus.BAD_REQUEST);
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return error("회원 정보 변경이 실패하였습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

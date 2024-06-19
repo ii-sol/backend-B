@@ -61,17 +61,23 @@ public class ChildController {
         if (user != null) {
             return success(user);
         } else {
-            response.setStatus(HttpStatus.BAD_REQUEST.value());
-            return error("잘못된 사용자 요청입니다.", HttpStatus.BAD_REQUEST);
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return error("회원 정보 변경이 실패하였습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PostMapping("/users")
-    public ApiUtils.ApiResult connectFamily(@RequestBody FamilySaveRequest familySaveRequest) throws Exception {
+    public ApiUtils.ApiResult connectFamily(@RequestBody FamilySaveRequest familySaveRequest, HttpServletResponse response) throws Exception {
         UserInfoResponse userInfo = jwtService.getUserInfo();
         familySaveRequest.setSn(userInfo.getSn());
 
-        return childService.connectFamily(familySaveRequest) ? success("가족 관계가 생성되었습니다.") : error("가족 관계가 생성되지 않았습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+        if (childService.connectFamily(familySaveRequest)) {
+            return success("가족 관계가 생성되었습니다.");
+        } else {
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return error("회원 정보 변경이 실패하였습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
     @DeleteMapping("/users/{family-sn}")
