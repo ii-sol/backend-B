@@ -95,6 +95,7 @@ public class ChildService {
         return childRepository.findAllPhones();
     }
 
+    @Transactional
     public int updateScore(ScoreUpdateRequest scoreUpdateRequest) {
         Child child = childRepository.findBySerialNum(scoreUpdateRequest.getSn())
                 .orElseThrow(() -> new NoSuchElementException("사용자가 존재하지 않습니다."));
