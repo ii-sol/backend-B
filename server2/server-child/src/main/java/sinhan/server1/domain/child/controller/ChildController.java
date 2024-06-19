@@ -32,7 +32,7 @@ public class ChildController {
 
     @GetMapping("/users/{sn}")
     public ApiUtils.ApiResult getUser(@PathVariable("sn") long sn) throws Exception {
-        UserInfoResponse userInfo = jwtService.getUserInfo(jwtService.getAccessToken());
+        UserInfoResponse userInfo = jwtService.getUserInfo();
         if (userInfo.getSn() != sn) {
             List<FamilyInfoResponse> familyInfo = userInfo.getFamilyInfo();
 
