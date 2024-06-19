@@ -13,7 +13,7 @@ public interface ChildRepository extends JpaRepository<Child, Integer> {
     Optional<Child> findBySerialNum(long userSn);
     Optional<Child> findByPhoneNum(String phoneNum);
 
-    @Query("SELECT u.phoneNum FROM User u")
+    @Query("SELECT c.phoneNum FROM Child c")
     List<String> findAllPhones();
 
     @Procedure(procedureName = "generate_serial_num")

@@ -13,12 +13,12 @@ import sinhan.server1.domain.child.dto.JoinInfoSaveRequest;
 import sinhan.server1.domain.child.dto.LoginInfoFindRequest;
 import sinhan.server1.domain.child.dto.PhoneFindRequest;
 import sinhan.server1.domain.child.dto.ScoreUpdateRequest;
-import sinhan.server1.domain.child.entity.Parents;
+//import sinhan.server1.domain.child.entity.Parents;
 import sinhan.server1.domain.child.entity.Child;
-import sinhan.server1.domain.child.entity.Family;
+//import sinhan.server1.domain.child.entity.Family;
 import sinhan.server1.domain.child.repository.ChildRepository;
-import sinhan.server1.domain.child.repository.FamilyRepository;
-import sinhan.server1.domain.child.repository.ParentsRepository;
+//import sinhan.server1.domain.child.repository.FamilyRepository;
+//import sinhan.server1.domain.child.repository.ParentsRepository;
 import sinhan.server1.global.security.dto.FamilyInfoResponse;
 import sinhan.server1.global.utils.exception.AuthException;
 
@@ -33,8 +33,8 @@ public class ChildService {
 
     private final PasswordEncoder passwordEncoder;
     private ChildRepository childRepository;
-    private ParentsRepository parentsRepository;
-    private FamilyRepository familyRepository;
+//    private ParentsRepository parentsRepository;
+//    private FamilyRepository familyRepository;
 
     @Transactional
     public ChildFindOneResponse getUser(long sn) {
@@ -60,35 +60,35 @@ public class ChildService {
         return updatedChild.convertToUserFindOneResponse();
     }
 
-    @Transactional
-    public boolean connectFamily(FamilySaveRequest familySaveRequest) {
-        Child child = childRepository.findBySerialNum(familySaveRequest.getSn())
-                .orElseThrow(() -> new NoSuchElementException("사용자가 존재하지 않습니다."));
-
-        Parents parents = parentsRepository.findByPhoneNum(familySaveRequest.getPhoneNum())
-                .orElseThrow(() -> new NoSuchElementException("부모 사용자가 존재하지 않습니다."));
-
-        Family family = familyRepository.save(new Family(child, parents, familySaveRequest.getParentsAlias()));
-
-        return !familyRepository.findMyFamilyInfo(family.getId()).isEmpty();
-    }
-
-    @Transactional
-    public boolean disconnectFamily(long sn, long familySn) {
-        Child child = childRepository.findBySerialNum(sn)
-                .orElseThrow(() -> new NoSuchElementException("사용자가 존재하지 않습니다."));
-
-        Parents parents = parentsRepository.findBySerialNum(familySn)
-                .orElseThrow(() -> new NoSuchElementException("부모 사용자가 존재하지 않습니다."));
-
-        Family family = familyRepository
-                .findByChildSerialNumAndFamilySerialNum(child, parents)
-                .orElseThrow(() -> new NoSuchElementException("가족 관계가 존재하지 않습니다."));
-
-        familyRepository.delete(family.getId());
-
-        return familyRepository.findById(family.getId()).isEmpty();
-    }
+//    @Transactional
+//    public boolean connectFamily(FamilySaveRequest familySaveRequest) {
+//        Child child = childRepository.findBySerialNum(familySaveRequest.getSn())
+//                .orElseThrow(() -> new NoSuchElementException("사용자가 존재하지 않습니다."));
+//
+//        Parents parents = parentsRepository.findByPhoneNum(familySaveRequest.getPhoneNum())
+//                .orElseThrow(() -> new NoSuchElementException("부모 사용자가 존재하지 않습니다."));
+//
+//        Family family = familyRepository.save(new Family(child, parents, familySaveRequest.getParentsAlias()));
+//
+//        return !familyRepository.findMyFamilyInfo(family.getId()).isEmpty();
+//    }
+//
+//    @Transactional
+//    public boolean disconnectFamily(long sn, long familySn) {
+//        Child child = childRepository.findBySerialNum(sn)
+//                .orElseThrow(() -> new NoSuchElementException("사용자가 존재하지 않습니다."));
+//
+//        Parents parents = parentsRepository.findBySerialNum(familySn)
+//                .orElseThrow(() -> new NoSuchElementException("부모 사용자가 존재하지 않습니다."));
+//
+//        Family family = familyRepository
+//                .findByChildSerialNumAndFamilySerialNum(child, parents)
+//                .orElseThrow(() -> new NoSuchElementException("가족 관계가 존재하지 않습니다."));
+//
+//        familyRepository.delete(family.getId());
+//
+//        return familyRepository.findById(family.getId()).isEmpty();
+//    }
 
     @Transactional
     public List<String> getPhones() {
@@ -130,11 +130,11 @@ public class ChildService {
         return child.convertToUserFindOneResponse();
     }
 
-    @Transactional()
-    public List<FamilyInfoResponse> getFamilyInfo(long sn) {
-        return familyRepository.findMyFamilyInfo(sn)
-                .stream()
-                .map(myFamily -> new FamilyInfoResponse(myFamily.getSn(), myFamily.getName()))
-                .collect(Collectors.toList());
-    }
+//    @Transactional()
+//    public List<FamilyInfoResponse> getFamilyInfo(long sn) {
+//        return familyRepository.findMyFamilyInfo(sn)
+//                .stream()
+//                .map(myFamily -> new FamilyInfoResponse(myFamily.getSn(), myFamily.getName()))
+//                .collect(Collectors.toList());
+//    }
 }

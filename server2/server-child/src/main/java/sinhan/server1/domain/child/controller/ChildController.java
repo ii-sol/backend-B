@@ -71,24 +71,24 @@ public class ChildController {
         return user != null ? success(user) : error("잘못된 사용자 요청입니다.", HttpStatus.BAD_REQUEST);
     }
 
-    @PostMapping("/users")
-    public ApiUtils.ApiResult connectFamily(@RequestBody FamilySaveRequest familySaveRequest) throws Exception {
-        UserInfoResponse userInfo = jwtService.getUserInfo(jwtService.getAccessToken());
-        familySaveRequest.setSn(userInfo.getSn());
-
-        return childService.connectFamily(familySaveRequest)
-                ? success("가족 관계가 생성되었습니다.")
-                : error("가족 관계가 생성되지 않았습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    @DeleteMapping("/users/{family-sn}")
-    public ApiUtils.ApiResult disconnectFamily(@PathVariable long familySn) throws Exception {
-        UserInfoResponse userInfo = jwtService.getUserInfo(jwtService.getAccessToken());
-
-        return childService.disconnectFamily(userInfo.getSn(), familySn)
-                ? success("가족 관계가 삭제되었습니다.")
-                : error("가족 관계가 삭제되지 않았습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+//    @PostMapping("/users")
+//    public ApiUtils.ApiResult connectFamily(@RequestBody FamilySaveRequest familySaveRequest) throws Exception {
+//        UserInfoResponse userInfo = jwtService.getUserInfo(jwtService.getAccessToken());
+//        familySaveRequest.setSn(userInfo.getSn());
+//
+//        return childService.connectFamily(familySaveRequest)
+//                ? success("가족 관계가 생성되었습니다.")
+//                : error("가족 관계가 생성되지 않았습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+//    }
+//
+//    @DeleteMapping("/users/{family-sn}")
+//    public ApiUtils.ApiResult disconnectFamily(@PathVariable long familySn) throws Exception {
+//        UserInfoResponse userInfo = jwtService.getUserInfo(jwtService.getAccessToken());
+//
+//        return childService.disconnectFamily(userInfo.getSn(), familySn)
+//                ? success("가족 관계가 삭제되었습니다.")
+//                : error("가족 관계가 삭제되지 않았습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+//    }
 
     @GetMapping("/users/phones")
     public ApiUtils.ApiResult getPhones() {
@@ -131,47 +131,47 @@ public class ChildController {
         }
     }
 
-    @PostMapping("/auth/login")
-    public ApiUtils.ApiResult login(@Valid @RequestBody LoginInfoFindRequest loginInfoFindRequest, HttpServletResponse response) throws AuthException, JsonProcessingException {
-        try {
-            ChildFindOneResponse user = childService.login(loginInfoFindRequest);
-            List<FamilyInfoResponse> myFamilyInfo = childService.getFamilyInfo(user.getSerialNumber());
+//    @PostMapping("/auth/login")
+//    public ApiUtils.ApiResult login(@Valid @RequestBody LoginInfoFindRequest loginInfoFindRequest, HttpServletResponse response) throws AuthException, JsonProcessingException {
+//        try {
+//            ChildFindOneResponse user = childService.login(loginInfoFindRequest);
+//            List<FamilyInfoResponse> myFamilyInfo = childService.getFamilyInfo(user.getSerialNumber());
+//
+//            myFamilyInfo.forEach(info -> log.info("Family Info - SN: {}, Name: {}", info.getSn(), info.getName()));
+//
+//            JwtTokenResponse jwtTokenResponse = new JwtTokenResponse(jwtService.createAccessToken(user.getSerialNumber(), myFamilyInfo), jwtService.createRefreshToken(user.getSerialNumber()));
+//            jwtService.sendJwtToken(response, jwtTokenResponse);
+//
+//            return success("로그인되었습니다.");
+//        } catch (Exception e) {
+//            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+//            return error("로그인에 실패하였습니다. " + e.getMessage(), HttpStatus.UNAUTHORIZED);
+//        }
+//    }
 
-            myFamilyInfo.forEach(info -> log.info("Family Info - SN: {}, Name: {}", info.getSn(), info.getName()));
-
-            JwtTokenResponse jwtTokenResponse = new JwtTokenResponse(jwtService.createAccessToken(user.getSerialNumber(), myFamilyInfo), jwtService.createRefreshToken(user.getSerialNumber()));
-            jwtService.sendJwtToken(response, jwtTokenResponse);
-
-            return success("로그인되었습니다.");
-        } catch (Exception e) {
-            response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            return error("로그인에 실패하였습니다. " + e.getMessage(), HttpStatus.UNAUTHORIZED);
-        }
-    }
-
-    @PostMapping("/auth/logout")
-    public ApiUtils.ApiResult logout(HttpServletRequest request, HttpServletResponse response) {
-        return success(""); // main으로 redirection
-    }
-
-    @PostMapping("/auth/token")
-    public ApiUtils.ApiResult refreshToken(HttpServletRequest request, HttpServletResponse response) {
-        String refreshToken = jwtService.getRefreshToken();
-        if (refreshToken == null) {
-            response.setStatus(HttpStatus.BAD_REQUEST.value());
-            return error("Refresh-Token을 찾지 못했습니다.", HttpStatus.BAD_REQUEST);
-        }
-
-        try {
-            long sn = jwtService.getUserInfo(refreshToken).getSn();
-            List<FamilyInfoResponse> myFamilyInfo = childService.getFamilyInfo(sn);
-
-            String newAccessToken = jwtService.createAccessToken(sn, myFamilyInfo);
-            jwtService.sendAccessToken(response, newAccessToken);
-            return success("Authorization이 새로 발급되었습니다.");
-        } catch (Exception e) {
-            response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            return error("Refresh-Token 검증에 실패하였습니다. " + e.getMessage(), HttpStatus.UNAUTHORIZED);
-        }
-    }
+//    @PostMapping("/auth/logout")
+//    public ApiUtils.ApiResult logout(HttpServletRequest request, HttpServletResponse response) {
+//        return success(""); // main으로 redirection
+//    }
+//
+//    @PostMapping("/auth/token")
+//    public ApiUtils.ApiResult refreshToken(HttpServletRequest request, HttpServletResponse response) {
+//        String refreshToken = jwtService.getRefreshToken();
+//        if (refreshToken == null) {
+//            response.setStatus(HttpStatus.BAD_REQUEST.value());
+//            return error("Refresh-Token을 찾지 못했습니다.", HttpStatus.BAD_REQUEST);
+//        }
+//
+//        try {
+//            long sn = jwtService.getUserInfo(refreshToken).getSn();
+//            List<FamilyInfoResponse> myFamilyInfo = childService.getFamilyInfo(sn);
+//
+//            String newAccessToken = jwtService.createAccessToken(sn, myFamilyInfo);
+//            jwtService.sendAccessToken(response, newAccessToken);
+//            return success("Authorization이 새로 발급되었습니다.");
+//        } catch (Exception e) {
+//            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+//            return error("Refresh-Token 검증에 실패하였습니다. " + e.getMessage(), HttpStatus.UNAUTHORIZED);
+//        }
+//    }
 }
