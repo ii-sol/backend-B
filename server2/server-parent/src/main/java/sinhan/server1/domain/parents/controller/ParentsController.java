@@ -1,7 +1,6 @@
 package sinhan.server1.domain.parents.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -18,7 +17,6 @@ import sinhan.server1.global.utils.ApiUtils;
 import sinhan.server1.global.utils.exception.AuthException;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Set;
 
 import static sinhan.server1.global.utils.ApiUtils.error;
@@ -132,7 +130,7 @@ public class ParentsController {
     }
 
     @PostMapping("/auth/logout")
-    public ApiUtils.ApiResult logout(HttpServletRequest request, HttpServletResponse response) {
+    public ApiUtils.ApiResult logout(HttpServletResponse response) {
         return success(""); // main으로 redirection
     }
 

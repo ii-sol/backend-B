@@ -1,7 +1,6 @@
 package sinhan.server1.domain.child.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -93,10 +92,15 @@ public class ChildController {
     }
 
     @GetMapping("/users/phones")
-    public ApiUtils.ApiResult getPhones() {
+    public ApiUtils.ApiResult getPhones(HttpServletResponse response) {
         List<String> phones = childService.getPhones();
 
-        return phones.isEmpty() ? error("전화번호부를 가져오지 못했습니다.", HttpStatus.NOT_FOUND) : success(phones);
+        if (phones.isEmpty()) {
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return error("전화번호부를 가져오지 못했습니다.", HttpStatus.NOT_FOUND);
+        } else {
+            return success(phones);
+        }
     }
 
     @PutMapping("/users/score/{change}")
@@ -152,7 +156,7 @@ public class ChildController {
     }
 
     @PostMapping("/auth/logout")
-    public ApiUtils.ApiResult logout(HttpServletRequest request, HttpServletResponse response) {
+    public ApiUtils.ApiResult logout(HttpServletResponse response) {
         return success(""); // main으로 redirection
     }
 
