@@ -106,7 +106,7 @@ public class JwtService {
         UserInfoResponse userInfo = getUserInfo(token);
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_USER");
 
-        return new UsernamePasswordAuthenticationToken(userInfo.getSn(), Collections.singletonList(authority));
+        return new UsernamePasswordAuthenticationToken(userInfo.getSn(), null, Collections.singletonList(authority));
     }
 
     public void sendJwtToken(HttpServletResponse response, JwtTokenResponse jwtTokenResponse) {
