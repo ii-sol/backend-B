@@ -7,8 +7,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import sinhan.server1.domain.parents.dto.*;
+import sinhan.server1.domain.parents.entity.Child;
 import sinhan.server1.domain.parents.entity.Family;
 import sinhan.server1.domain.parents.entity.Parents;
+import sinhan.server1.domain.parents.repository.ChildRepository;
 import sinhan.server1.domain.parents.repository.FamilyRepository;
 import sinhan.server1.domain.parents.repository.ParentsRepository;
 import sinhan.server1.global.security.dto.FamilyInfoResponse;
@@ -26,6 +28,7 @@ public class ParentsService {
 
     private final PasswordEncoder passwordEncoder;
     private ParentsRepository parentsRepository;
+    private ChildRepository childRepository;
     private FamilyRepository familyRepository;
 
     @Transactional
@@ -57,14 +60,16 @@ public class ParentsService {
         Parents parents = parentsRepository.findBySerialNum(sn)
                 .orElseThrow(() -> new NoSuchElementException("사용자가 존재하지 않습니다."));
 
+        Child child = childRepository.findBySerialNum(sn)
+                .orElseThrow(() -> new NoSuchElementException("아이 사용자가 존재하지 않습니다."));
+
         Family family = familyRepository
-                .findByUserSerialNumAndFamilySn(parents, familySn)
+                .findByChildSerialNumAndParentsSerialNum(child, parents)
                 .orElseThrow(() -> new NoSuchElementException("가족 관계가 존재하지 않습니다."));
 
         familyRepository.delete(family.getId());
 
-        Optional<Family> checkFamily = familyRepository.findById(family.getId());
-        return checkFamily.isEmpty();
+        return familyRepository.findById(family.getId()).isEmpty();
     }
 
     @Transactional
