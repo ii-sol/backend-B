@@ -1,31 +1,14 @@
 package sinhan.server1.domain.child.controller;
 
-import static sinhan.server1.global.utils.ApiUtils.error;
-import static sinhan.server1.global.utils.ApiUtils.success;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import java.util.List;
-import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-import sinhan.server1.domain.child.dto.ChildFindOneResponse;
-import sinhan.server1.domain.child.dto.ChildUpdateRequest;
-import sinhan.server1.domain.child.dto.FamilySaveRequest;
-import sinhan.server1.domain.child.dto.JoinInfoSaveRequest;
-import sinhan.server1.domain.child.dto.LoginInfoFindRequest;
-import sinhan.server1.domain.child.dto.PhoneFindRequest;
-import sinhan.server1.domain.child.dto.ScoreUpdateRequest;
+import org.springframework.web.bind.annotation.*;
+import sinhan.server1.domain.child.dto.*;
 import sinhan.server1.domain.child.service.ChildService;
 import sinhan.server1.global.security.JwtService;
 import sinhan.server1.global.security.dto.FamilyInfoResponse;
@@ -33,6 +16,12 @@ import sinhan.server1.global.security.dto.JwtTokenResponse;
 import sinhan.server1.global.security.dto.UserInfoResponse;
 import sinhan.server1.global.utils.ApiUtils;
 import sinhan.server1.global.utils.exception.AuthException;
+
+import java.util.List;
+import java.util.Set;
+
+import static sinhan.server1.global.utils.ApiUtils.error;
+import static sinhan.server1.global.utils.ApiUtils.success;
 
 @Slf4j
 @RestController
