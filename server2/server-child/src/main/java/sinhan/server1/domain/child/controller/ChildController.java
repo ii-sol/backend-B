@@ -81,10 +81,15 @@ public class ChildController {
     }
 
     @DeleteMapping("/users/{family-sn}")
-    public ApiUtils.ApiResult disconnectFamily(@PathVariable long familySn) throws Exception {
+    public ApiUtils.ApiResult disconnectFamily(@PathVariable long familySn, HttpServletResponse response) throws Exception {
         UserInfoResponse userInfo = jwtService.getUserInfo();
 
-        return childService.disconnectFamily(userInfo.getSn(), familySn) ? success("가족 관계가 삭제되었습니다.") : error("가족 관계가 삭제되지 않았습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+        if (childService.disconnectFamily(userInfo.getSn(), familySn)) {
+            return success("가족 관계가 삭제되었습니다.");
+        } else {
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return error("가족 관계 삭제가 실패하였습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/users/phones")
