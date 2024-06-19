@@ -18,7 +18,6 @@ import sinhan.server1.global.utils.exception.AuthException;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -44,7 +43,6 @@ public class ParentsService {
         Parents parents = parentsRepository.findBySerialNum(parentsUpdateRequest.getSerialNum())
                 .orElseThrow(() -> new NoSuchElementException("사용자가 존재하지 않습니다."));
 
-
         parents.setPhoneNum(parentsUpdateRequest.getPhoneNum());
         parents.setName(parentsUpdateRequest.getName());
         parents.setBirthDate(parentsUpdateRequest.getBirthdate());
@@ -52,7 +50,18 @@ public class ParentsService {
 
         Parents updatedParents = parentsRepository.save(parents);
 
-        return updatedParents.convertToUserFindOneResponse();
+        if (isUpdated(parentsUpdateRequest, updatedParents)) {
+            return updatedParents.convertToUserFindOneResponse();
+        } else {
+            throw new InternalError("회원 정보 변경이 실패하였습니다.");
+        }
+    }
+
+    private static boolean isUpdated(ParentsUpdateRequest parentsUpdateRequest, Parents updatedParents) {
+        return updatedParents.getPhoneNum().equals(parentsUpdateRequest.getPhoneNum())
+                && updatedParents.getName().equals(parentsUpdateRequest.getName())
+                && updatedParents.getBirthDate().equals(parentsUpdateRequest.getBirthdate())
+                && updatedParents.getProfileId() == parentsUpdateRequest.getProfileId();
     }
 
     @Transactional

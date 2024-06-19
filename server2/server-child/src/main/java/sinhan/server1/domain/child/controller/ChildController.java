@@ -52,12 +52,18 @@ public class ChildController {
     }
 
     @PutMapping("/users")
-    public ApiUtils.ApiResult updateUser(@RequestBody ChildUpdateRequest childUpdateRequest) throws Exception {
+    public ApiUtils.ApiResult updateUser(@RequestBody ChildUpdateRequest childUpdateRequest, HttpServletResponse response) throws Exception {
         UserInfoResponse userInfo = jwtService.getUserInfo();
         childUpdateRequest.setSerialNum(userInfo.getSn());
 
         ChildFindOneResponse user = childService.updateUser(childUpdateRequest);
-        return user != null ? success(user) : error("잘못된 사용자 요청입니다.", HttpStatus.BAD_REQUEST);
+
+        if (user != null) {
+            return success(user);
+        } else {
+            response.setStatus(HttpStatus.BAD_REQUEST.value());
+            return error("잘못된 사용자 요청입니다.", HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping("/users")

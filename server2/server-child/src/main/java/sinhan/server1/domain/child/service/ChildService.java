@@ -6,16 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import sinhan.server1.domain.child.dto.ChildFindOneResponse;
-import sinhan.server1.domain.child.dto.ChildUpdateRequest;
-import sinhan.server1.domain.child.dto.FamilySaveRequest;
-import sinhan.server1.domain.child.dto.JoinInfoSaveRequest;
-import sinhan.server1.domain.child.dto.LoginInfoFindRequest;
-import sinhan.server1.domain.child.dto.PhoneFindRequest;
-import sinhan.server1.domain.child.dto.ScoreUpdateRequest;
-import sinhan.server1.domain.child.entity.Parents;
+import sinhan.server1.domain.child.dto.*;
 import sinhan.server1.domain.child.entity.Child;
 import sinhan.server1.domain.child.entity.Family;
+import sinhan.server1.domain.child.entity.Parents;
 import sinhan.server1.domain.child.repository.ChildRepository;
 import sinhan.server1.domain.child.repository.FamilyRepository;
 import sinhan.server1.domain.child.repository.ParentsRepository;
@@ -49,7 +43,6 @@ public class ChildService {
         Child child = childRepository.findBySerialNum(childUpdateRequest.getSerialNum())
                 .orElseThrow(() -> new NoSuchElementException("사용자가 존재하지 않습니다."));
 
-
         child.setPhoneNum(childUpdateRequest.getPhoneNum());
         child.setName(childUpdateRequest.getName());
         child.setBirthDate(childUpdateRequest.getBirthdate());
@@ -57,7 +50,18 @@ public class ChildService {
 
         Child updatedChild = childRepository.save(child);
 
-        return updatedChild.convertToUserFindOneResponse();
+        if (isUpdated(childUpdateRequest, updatedChild)) {
+            return updatedChild.convertToUserFindOneResponse();
+        } else {
+            throw new InternalError("회원 정보 변경이 실패하였습니다.");
+        }
+    }
+
+    private static boolean isUpdated(ChildUpdateRequest childUpdateRequest, Child updatedChild) {
+        return updatedChild.getPhoneNum().equals(childUpdateRequest.getPhoneNum())
+                && updatedChild.getName().equals(childUpdateRequest.getName())
+                && updatedChild.getBirthDate().equals(childUpdateRequest.getBirthdate())
+                && updatedChild.getProfileId() == childUpdateRequest.getProfileId();
     }
 
     @Transactional
