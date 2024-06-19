@@ -64,7 +64,7 @@ public class ChildController {
 
     @PutMapping("/users")
     public ApiUtils.ApiResult updateUser(@RequestBody ChildUpdateRequest childUpdateRequest) throws Exception {
-        UserInfoResponse userInfo = jwtService.getUserInfo(jwtService.getAccessToken());
+        UserInfoResponse userInfo = jwtService.getUserInfo();
         childUpdateRequest.setSerialNum(userInfo.getSn());
 
         ChildFindOneResponse user = childService.updateUser(childUpdateRequest);
@@ -73,7 +73,7 @@ public class ChildController {
 
     @PostMapping("/users")
     public ApiUtils.ApiResult connectFamily(@RequestBody FamilySaveRequest familySaveRequest) throws Exception {
-        UserInfoResponse userInfo = jwtService.getUserInfo(jwtService.getAccessToken());
+        UserInfoResponse userInfo = jwtService.getUserInfo();
         familySaveRequest.setSn(userInfo.getSn());
 
         return childService.connectFamily(familySaveRequest) ? success("가족 관계가 생성되었습니다.") : error("가족 관계가 생성되지 않았습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -81,7 +81,7 @@ public class ChildController {
 
     @DeleteMapping("/users/{family-sn}")
     public ApiUtils.ApiResult disconnectFamily(@PathVariable long familySn) throws Exception {
-        UserInfoResponse userInfo = jwtService.getUserInfo(jwtService.getAccessToken());
+        UserInfoResponse userInfo = jwtService.getUserInfo();
 
         return childService.disconnectFamily(userInfo.getSn(), familySn) ? success("가족 관계가 삭제되었습니다.") : error("가족 관계가 삭제되지 않았습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -95,7 +95,7 @@ public class ChildController {
 
     @PutMapping("/users/score/{change}")
     public ApiUtils.ApiResult updateScore(@PathVariable int change) throws Exception {
-        UserInfoResponse userInfo = jwtService.getUserInfo(jwtService.getAccessToken());
+        UserInfoResponse userInfo = jwtService.getUserInfo();
 
         return success(childService.updateScore(new ScoreUpdateRequest(userInfo.getSn(), change)));
     }

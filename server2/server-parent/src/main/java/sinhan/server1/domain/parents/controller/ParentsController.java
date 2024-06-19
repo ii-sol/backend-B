@@ -54,7 +54,7 @@ public class ParentsController {
 
     @PutMapping("/users")
     public ApiUtils.ApiResult updateUser(@RequestBody ParentsUpdateRequest parentsUpdateRequest) throws Exception {
-        UserInfoResponse userInfo = jwtService.getUserInfo(jwtService.getAccessToken());
+        UserInfoResponse userInfo = jwtService.getUserInfo();
         parentsUpdateRequest.setSerialNum(userInfo.getSn());
 
         ParentsFindOneResponse user = parentsService.updateUser(parentsUpdateRequest);
@@ -63,7 +63,7 @@ public class ParentsController {
 
     @DeleteMapping("/users/{family-sn}")
     public ApiUtils.ApiResult disconnectFamily(@PathVariable long familySn) throws Exception {
-        UserInfoResponse userInfo = jwtService.getUserInfo(jwtService.getAccessToken());
+        UserInfoResponse userInfo = jwtService.getUserInfo();
 
         if (!isFamilyUser(familySn)) {
             throw new NoSuchElementException("아이 사용자가 존재하지 않습니다.");
