@@ -65,7 +65,7 @@ public class ChildService {
     }
 
     @Transactional
-    public boolean connectFamily(FamilySaveRequest familySaveRequest) {
+    public int connectFamily(FamilySaveRequest familySaveRequest) {
         Child child = childRepository.findBySerialNum(familySaveRequest.getSn())
                 .orElseThrow(() -> new NoSuchElementException("사용자가 존재하지 않습니다."));
 
@@ -74,11 +74,11 @@ public class ChildService {
 
         Family family = familyRepository.save(new Family(child, parents, familySaveRequest.getParentsAlias()));
 
-        return familyRepository.findMyFamilyInfo(family.getId()).isEmpty();
+        return family.getId();
     }
 
     @Transactional
-    public boolean disconnectFamily(long sn, long familySn) {
+    public int disconnectFamily(long sn, long familySn) {
         Child child = childRepository.findBySerialNum(sn)
                 .orElseThrow(() -> new NoSuchElementException("사용자가 존재하지 않습니다."));
 
@@ -91,7 +91,12 @@ public class ChildService {
 
         familyRepository.delete(family.getId());
 
-        return familyRepository.findById(family.getId()).isEmpty();
+        return family.getId();
+    }
+
+    @Transactional
+    public boolean isFamily(int deletedId) {
+        return familyRepository.findById(deletedId).isPresent();
     }
 
     @Transactional

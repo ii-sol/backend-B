@@ -70,21 +70,23 @@ public class ChildController {
         UserInfoResponse userInfo = jwtService.getUserInfo();
         familySaveRequest.setSn(userInfo.getSn());
 
-        if (childService.connectFamily(familySaveRequest)) {
+        int cretedId = childService.connectFamily(familySaveRequest);
+
+        if (childService.isFamily(cretedId)) {
             return success("가족 관계가 생성되었습니다.");
         } else {
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
             return error("가족 관계 생성에 실패하였습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
 
     @DeleteMapping("/users/{family-sn}")
     public ApiUtils.ApiResult disconnectFamily(@PathVariable("family-sn") long familySn, HttpServletResponse response) throws Exception {
         UserInfoResponse userInfo = jwtService.getUserInfo();
 
-        // TODO: 삭제 여부 확인 로직 변경
-        if (childService.disconnectFamily(userInfo.getSn(), familySn)) {
+        int deletedId = childService.disconnectFamily(userInfo.getSn(), familySn);
+
+        if (childService.isFamily(deletedId)) {
             return success("가족 관계가 삭제되었습니다.");
         } else {
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
