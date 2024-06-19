@@ -101,7 +101,7 @@ public class ParentsController {
         }
     }
 
-    @GetMapping("/auth/useful-phone")
+    @PostMapping("/auth/useful-phone")
     public ApiUtils.ApiResult checkPhone(@Valid @RequestBody PhoneFindRequest phoneFindRequest, HttpServletResponse response) {
         if (parentsService.checkPhone(phoneFindRequest)) {
             return success(true);

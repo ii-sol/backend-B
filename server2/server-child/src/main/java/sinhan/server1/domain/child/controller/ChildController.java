@@ -127,7 +127,7 @@ public class ChildController {
         }
     }
 
-    @GetMapping("/auth/useful-phone")
+    @PostMapping("/auth/useful-phone")
     public ApiUtils.ApiResult checkPhone(@Valid @RequestBody PhoneFindRequest phoneFindRequest, HttpServletResponse response) {
         if (childService.checkPhone(phoneFindRequest)) {
             return success(true);
