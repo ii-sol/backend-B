@@ -66,7 +66,7 @@ public class ChildController {
     }
 
     @PostMapping("/users")
-    public ApiUtils.ApiResult connectFamily(@RequestBody FamilySaveRequest familySaveRequest, HttpServletResponse response) throws Exception {
+    public ApiUtils.ApiResult connectFamily(@Valid @RequestBody FamilySaveRequest familySaveRequest, HttpServletResponse response) throws Exception {
         UserInfoResponse userInfo = jwtService.getUserInfo();
         familySaveRequest.setSn(userInfo.getSn());
 
@@ -74,20 +74,21 @@ public class ChildController {
             return success("가족 관계가 생성되었습니다.");
         } else {
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-            return error("회원 정보 변경이 실패하였습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+            return error("가족 관계 생성에 실패하였습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
 
     @DeleteMapping("/users/{family-sn}")
-    public ApiUtils.ApiResult disconnectFamily(@PathVariable long familySn, HttpServletResponse response) throws Exception {
+    public ApiUtils.ApiResult disconnectFamily(@PathVariable("family-sn") long familySn, HttpServletResponse response) throws Exception {
         UserInfoResponse userInfo = jwtService.getUserInfo();
 
+        // TODO: 삭제 여부 확인 로직 변경
         if (childService.disconnectFamily(userInfo.getSn(), familySn)) {
             return success("가족 관계가 삭제되었습니다.");
         } else {
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-            return error("가족 관계 삭제가 실패하였습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+            return error("가족 관계 삭제에 실패하였습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

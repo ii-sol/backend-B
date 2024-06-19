@@ -74,7 +74,7 @@ public class ChildService {
 
         Family family = familyRepository.save(new Family(child, parents, familySaveRequest.getParentsAlias()));
 
-        return !familyRepository.findMyFamilyInfo(family.getId()).isEmpty();
+        return familyRepository.findMyFamilyInfo(family.getId()).isEmpty();
     }
 
     @Transactional
@@ -86,7 +86,7 @@ public class ChildService {
                 .orElseThrow(() -> new NoSuchElementException("부모 사용자가 존재하지 않습니다."));
 
         Family family = familyRepository
-                .findByChildSerialNumAndParentsSerialNum(child, parents)
+                .findByChildAndParents(child, parents)
                 .orElseThrow(() -> new NoSuchElementException("가족 관계가 존재하지 않습니다."));
 
         familyRepository.delete(family.getId());
