@@ -151,7 +151,7 @@ public class ChildController {
     }
 
     @PostMapping("/auth/token")
-    public ApiUtils.ApiResult refreshToken(HttpServletRequest request, HttpServletResponse response) {
+    public ApiUtils.ApiResult refreshToken(HttpServletResponse response) {
         String refreshToken = jwtService.getRefreshToken();
         if (refreshToken == null) {
             response.setStatus(HttpStatus.BAD_REQUEST.value());
