@@ -33,11 +33,11 @@ public class SSEService {
     public SseEmitter subscribe(Long serialNumber) {
         SseEmitter emitter = new SseEmitter(7200000L);// 2시간 타임아웃
         sseEmitters.put(serialNumber, emitter);
-
-        //이부분은 원래 없음
-        String newMesssage= MessageHandler.getMessage(0,"알파코");
-        sendNotification(serialNumber, "alfo", 1, newMesssage);
-        //여기까지 원래 없음
+//
+//        //이부분은 원래 없음
+//        String newMesssage= MessageHandler.getMessage(0,"알파코");
+//        sendNotification(serialNumber, "alfo", 1, newMesssage);
+//        //여기까지 원래 없음
 
         emitter.onCompletion(()-> sseEmitters.remove(serialNumber));
         emitter.onTimeout(()->{

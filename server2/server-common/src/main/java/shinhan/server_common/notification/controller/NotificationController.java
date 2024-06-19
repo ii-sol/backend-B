@@ -28,27 +28,28 @@ public class NotificationController {
 //    }
 
 
+    //SSE 연결하기 userSerialNumber -> User 들어오면 바뀔 예정
     @GetMapping("/subscribe/{usn}")
     public SseEmitter subscribeSSE(@PathVariable("usn") Long usn){
 
         return sseService.subscribe(usn);
     }
 
-    //해당 사용자의 모든 알림 가져오기
+    //해당 사용자의 모든 알림 가져오기 userSerialNumber -> User 들어오면 바뀔 예정
     @GetMapping("/{usn}")
     public ApiUtils.ApiResult findAllNotifications(@PathVariable("usn") Long usn){
         List<NotificationFindAllResponse> response = sseService.findAllNotifications(usn);
         return success(response);
     }
 
-    //개별 알림 삭제하기
+    //개별 알림 삭제하기 notificationSerialNumber
     @DeleteMapping("/{nsn}")
     public ApiUtils.ApiResult deleteNotification( @PathVariable("nsn") String nsn){
         sseService.deleteNotification(nsn);
         return success(null);
     }
 
-    //알림 전체 삭제하기
+    //알림 전체 삭제하기 - rsn : receiverSerialNumber
     @DeleteMapping("/all/{rsn}")
     public ApiUtils.ApiResult deleteNotification(@PathVariable("rsn") Long rsn){
         sseService.deleteAllNotifications(rsn);
