@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import sinhan.server1.domain.child.dto.FamilyInfoResponse;
+import sinhan.server1.domain.child.dto.FamilyInfoInterface;
 import sinhan.server1.domain.child.entity.Child;
 import sinhan.server1.domain.child.entity.Family;
 import sinhan.server1.domain.child.entity.Parents;
@@ -24,7 +24,7 @@ public interface FamilyRepository extends JpaRepository<Family, Integer> {
             "FROM Family f " +
             "WHERE f.child.serialNum = :sn " +
             "ORDER BY sn")
-    List<FamilyInfoResponse> findMyFamilyInfo(@Param("sn") long sn);
+    List<FamilyInfoInterface> findMyFamilyInfo(@Param("sn") long sn);
 
     @Query("SELECT f.parentsAlias FROM Family f WHERE f.child.serialNum = :sn")
     String findParentsAlias(@Param("sn") long sn);
