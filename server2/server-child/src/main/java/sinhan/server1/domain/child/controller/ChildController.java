@@ -79,11 +79,11 @@ public class ChildController {
         }
     }
 
-    @DeleteMapping("/users/{family-sn}")
-    public ApiUtils.ApiResult disconnectFamily(@PathVariable("family-sn") long familySn, HttpServletResponse response) throws Exception {
+    @DeleteMapping("/users/{parents-sn}")
+    public ApiUtils.ApiResult disconnectFamily(@PathVariable("parents-sn") long parentsSn, HttpServletResponse response) throws Exception {
         UserInfoResponse userInfo = jwtService.getUserInfo();
 
-        int deletedId = childService.disconnectFamily(userInfo.getSn(), familySn);
+        int deletedId = childService.disconnectFamily(userInfo.getSn(), parentsSn);
 
         if (childService.isFamily(deletedId)) {
             return success("가족 관계가 삭제되었습니다.");

@@ -8,6 +8,4 @@ import java.util.Optional;
 public interface ChildRepository extends JpaRepository<Child, Integer> {
 
     Optional<Child> findBySerialNum(long userSn);
-
-    Optional<Child> findByPhoneNum(String phoneNum);
 }

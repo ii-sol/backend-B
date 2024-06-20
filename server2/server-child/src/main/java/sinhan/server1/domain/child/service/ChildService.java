@@ -78,11 +78,11 @@ public class ChildService {
     }
 
     @Transactional
-    public int disconnectFamily(long sn, long familySn) {
+    public int disconnectFamily(long sn, long parentsSn) {
         Child child = childRepository.findBySerialNum(sn)
                 .orElseThrow(() -> new NoSuchElementException("사용자가 존재하지 않습니다."));
 
-        Parents parents = parentsRepository.findBySerialNum(familySn)
+        Parents parents = parentsRepository.findBySerialNum(parentsSn)
                 .orElseThrow(() -> new NoSuchElementException("부모 사용자가 존재하지 않습니다."));
 
         Family family = familyRepository
