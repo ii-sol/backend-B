@@ -1,6 +1,5 @@
 package sinhan.server1.domain.child.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -141,7 +140,7 @@ public class ChildController {
     }
 
     @PostMapping("/auth/login")
-    public ApiUtils.ApiResult login(@Valid @RequestBody LoginInfoFindRequest loginInfoFindRequest, HttpServletResponse response) throws AuthException, JsonProcessingException {
+    public ApiUtils.ApiResult login(@Valid @RequestBody LoginInfoFindRequest loginInfoFindRequest, HttpServletResponse response) throws AuthException {
         try {
             ChildFindOneResponse user = childService.login(loginInfoFindRequest);
             List<FamilyInfoResponse> myFamilyInfo = childService.getFamilyInfo(user.getSerialNumber());
@@ -152,9 +151,12 @@ public class ChildController {
             jwtService.sendJwtToken(response, jwtTokenResponse);
 
             return success("로그인되었습니다.");
-        } catch (Exception e) {
+        } catch (AuthException e) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            return error("로그인에 실패하였습니다. " + e.getMessage(), HttpStatus.UNAUTHORIZED);
+            return error("로그인에 실패하였습니다 " + e.getMessage(), HttpStatus.UNAUTHORIZED);
+        } catch (Exception ee) {
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            return error("로그인에 실패하였습니다 " + ee.getClass() + ee.getMessage(), HttpStatus.UNAUTHORIZED);
         }
     }
 

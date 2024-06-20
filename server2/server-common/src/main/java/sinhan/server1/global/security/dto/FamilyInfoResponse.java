@@ -9,10 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class FamilyInfoResponse{
 
-    long sn;
-    String name;
-
-    public FamilyInfoResponse(long sn) {
-        this.sn = sn;
-    }
+    private long sn;
+    private String name;
 }
