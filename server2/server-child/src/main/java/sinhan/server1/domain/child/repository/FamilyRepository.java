@@ -26,8 +26,5 @@ public interface FamilyRepository extends JpaRepository<Family, Integer> {
             "ORDER BY sn")
     List<FamilyInfoInterface> findMyFamilyInfo(@Param("sn") long sn);
 
-    @Query("SELECT f.parentsAlias FROM Family f WHERE f.child.serialNum = :sn")
-    String findParentsAlias(@Param("sn") long sn);
-
     Optional<Family> findByChildAndParents(Child child, Parents parents);
 }

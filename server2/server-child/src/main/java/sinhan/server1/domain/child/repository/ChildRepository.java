@@ -11,9 +11,10 @@ import java.util.Optional;
 public interface ChildRepository extends JpaRepository<Child, Integer> {
 
     Optional<Child> findBySerialNum(long userSn);
+
     Optional<Child> findByPhoneNum(String phoneNum);
 
-    @Query("SELECT c.phoneNum FROM Child c")
+    @Query("SELECT p.phoneNum FROM Parents p")
     List<String> findAllPhones();
 
     @Procedure(procedureName = "generate_serial_num")
