@@ -106,7 +106,7 @@ public class ChildController {
     }
 
     @PutMapping("/users/score/{change}")
-    public ApiUtils.ApiResult updateScore(@PathVariable int change) throws Exception {
+    public ApiUtils.ApiResult updateScore(@PathVariable("change") int change) throws Exception {
         UserInfoResponse userInfo = jwtService.getUserInfo();
 
         return success(childService.updateScore(new ScoreUpdateRequest(userInfo.getSn(), change)));
